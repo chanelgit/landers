@@ -1,0 +1,385 @@
+=<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Weird Credit Trick No One's Talking About</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 480px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    overflow: hidden;
+    min-height: 560px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    padding: 20px 24px 0 24px;
+    display: none;
+  }
+  .progress-wrap.active { display: block; }
+  .progress-bar-bg {
+    background: #eaeaf2;
+    border-radius: 10px;
+    height: 10px;
+    width: 100%;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    background: linear-gradient(90deg, #ffb800, #ff7a00);
+    height: 100%;
+    width: 0%;
+    border-radius: 10px;
+    transition: width 0.4s ease;
+  }
+  .progress-label {
+    font-size: 12px;
+    color: #888;
+    margin-top: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* SCREENS */
+  .screen {
+    display: none;
+    flex-direction: column;
+    flex: 1;
+    padding: 32px 28px;
+    animation: fadeIn 0.4s ease;
+  }
+  .screen.active {
+    display: flex;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* START SCREEN */
+  #screen-start {
+    justify-content: center;
+    text-align: center;
+    background: radial-gradient(circle at top, #1e2749 0%, #0f3460 100%);
+    color: white;
+    border-radius: 20px;
+  }
+
+  .eyebrow {
+    display: inline-block;
+    background: rgba(255,184,0,0.15);
+    color: #ffb800;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+    align-self: center;
+    border: 1px solid rgba(255,184,0,0.4);
+  }
+
+  #screen-start h1 {
+    font-size: 26px;
+    line-height: 1.35;
+    margin-bottom: 14px;
+    font-weight: 800;
+  }
+
+  #screen-start p {
+    font-size: 15px;
+    color: #c7cde0;
+    margin-bottom: 30px;
+    line-height: 1.5;
+  }
+
+  .start-btn {
+    background: linear-gradient(90deg, #ffb800, #ff7a00);
+    color: #1a1a2e;
+    border: none;
+    padding: 18px 24px;
+    font-size: 17px;
+    font-weight: 800;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(255,122,0,0.35);
+    transition: transform 0.15s ease;
+  }
+  .start-btn:hover { transform: scale(1.03); }
+  .start-btn:active { transform: scale(0.98); }
+
+  .microcopy {
+    margin-top: 16px;
+    font-size: 12px;
+    color: #8891ab;
+  }
+
+  /* QUESTION SCREENS */
+  .q-headline {
+    font-size: 21px;
+    font-weight: 800;
+    color: #1a1a2e;
+    margin: 20px 0 24px 0;
+    line-height: 1.35;
+  }
+
+  .answers {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .answer-btn {
+    background: #f5f6fa;
+    border: 2px solid #eaeaf2;
+    color: #1a1a2e;
+    font-size: 15.5px;
+    font-weight: 600;
+    padding: 18px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .answer-btn:hover {
+    border-color: #ff7a00;
+    background: #fff6ea;
+    transform: translateX(2px);
+  }
+
+  .answer-btn.selected {
+    border-color: #ff7a00;
+    background: #ffb800;
+    color: #1a1a2e;
+  }
+
+  .answer-btn .arrow {
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    font-size: 18px;
+  }
+  .answer-btn:hover .arrow { opacity: 1; }
+
+  /* LOADER SCREEN */
+  #screen-loading {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .spinner {
+    width: 56px;
+    height: 56px;
+    border: 5px solid #eaeaf2;
+    border-top: 5px solid #ff7a00;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+    margin-bottom: 24px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  #screen-loading h2 {
+    font-size: 19px;
+    color: #1a1a2e;
+    margin-bottom: 10px;
+    font-weight: 800;
+  }
+
+  #screen-loading p {
+    font-size: 14px;
+    color: #888;
+    max-width: 300px;
+  }
+
+  .loading-steps {
+    margin-top: 20px;
+    text-align: left;
+    font-size: 13px;
+    color: #555;
+  }
+  .loading-steps div {
+    padding: 6px 0;
+    opacity: 0.3;
+  }
+  .loading-steps div.done {
+    opacity: 1;
+    color: #1a8f4c;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-label" id="progressLabel">Question 1 of 4</div>
+  </div>
+
+  <!-- START SCREEN -->
+  <div class="screen active" id="screen-start">
+    <span class="eyebrow">60-Second Check</span>
+    <h1>There's a Weird Credit-Building Trick Almost No One Knows About — Does It Apply to You?</h1>
+    <p>People with scores under 640 are quietly using this one unusual method to build credit history — no loan, no hard inquiry. Answer 4 quick questions to see if it could work for your situation.</p>
+    <button class="start-btn" onclick="startQuiz()">Start The Quick Check →</button>
+    <div class="microcopy">Free • Takes under a minute • No credit pull</div>
+  </div>
+
+  <!-- QUESTION 1 -->
+  <div class="screen" id="screen-q1">
+    <div class="q-headline">What's your biggest credit frustration right now?</div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(this,'q1')">Score is stuck no matter what I do <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'q1')">Keep getting denied for things I need <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'q1')">Tried a "credit repair" service that didn't work <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'q1')">Honestly don't know why my score is low <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 2 -->
+  <div class="screen" id="screen-q2">
+    <div class="q-headline">Have you heard of the "reporting trick" people are using to build history without a loan?</div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(this,'q2')">No — never heard of it <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'q2')">Heard of it, don't understand it <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'q2')">Someone mentioned it but I dismissed it <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 3 -->
+  <div class="screen" id="screen-q3">
+    <div class="q-headline">What's pushing you to fix your credit in the next few months?</div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(this,'q3')">Trying to get approved for an apartment <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'q3')">Need a car without a crazy interest rate <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'q3')">Want a card I can actually get approved for <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'q3')">Just tired of feeling stuck <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 4 -->
+  <div class="screen" id="screen-q4">
+    <div class="q-headline">If there was a way to build credit with zero upfront cost and no hard inquiry, how curious are you to see it?</div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(this,'q4')">Extremely — show me now <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'q4')">Pretty curious, I'll take a look <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'q4')">Skeptical, but okay show me <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <!-- LOADING SCREEN -->
+  <div class="screen" id="screen-loading">
+    <div class="spinner"></div>
+    <h2>Finding your results…</h2>
+    <p>Matching your answers to the credit-building method that fits your situation.</p>
+    <div class="loading-steps" id="loadingSteps">
+      <div id="step1">✓ Reviewing your answers</div>
+      <div id="step2">✓ Checking eligibility factors</div>
+      <div id="step3">✓ Unlocking your result</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const totalQuestions = 4;
+  let currentQuestion = 0;
+
+  // === PLACEHOLDER: Replace with your real offer/tracking URL ===
+  const REDIRECT_URL = "https://your-offer-tracking-link.com/credit-builder";
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function updateProgress(qNum) {
+    const wrap = document.getElementById('progressWrap');
+    wrap.classList.add('active');
+    const pct = (qNum / totalQuestions) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = `Question ${qNum} of ${totalQuestions}`;
+  }
+
+  function startQuiz() {
+    currentQuestion = 1;
+    updateProgress(1);
+    showScreen('screen-q1');
+  }
+
+  function selectAnswer(btn, questionKey) {
+    // visual feedback
+    const siblings = btn.parentElement.querySelectorAll('.answer-btn');
+    siblings.forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+
+    // store answer (engagement only)
+    try {
+      localStorage.setItem(questionKey, btn.textContent.trim());
+    } catch(e) {}
+
+    setTimeout(() => {
+      currentQuestion++;
+      if (currentQuestion <= totalQuestions) {
+        updateProgress(currentQuestion);
+        showScreen('screen-q' + currentQuestion);
+      } else {
+        document.getElementById('progressWrap').classList.remove('active');
+        showScreen('screen-loading');
+        runLoadingSequence();
+      }
+    }, 350);
+  }
+
+  function runLoadingSequence() {
+    const steps = ['step1', 'step2', 'step3'];
+    steps.forEach(s => document.getElementById(s).classList.remove('done'));
+
+    steps.forEach((stepId, i) => {
+      setTimeout(() => {
+        document.getElementById(stepId).classList.add('done');
+      }, 500 * (i + 1));
+    });
+
+    setTimeout(() => {
+      window.location.href = REDIRECT_URL;
+    }, 2400);
+  }
+</script>
+
+</body>
+</html>
