@@ -1,0 +1,225 @@
+=<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Credit Trick Banks Don't Advertise</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  body {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .container {
+    background: #ffffff;
+    border-radius: 20px;
+    max-width: 480px;
+    width: 100%;
+    min-height: 520px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    width: 100%;
+    height: 8px;
+    background: #eaeaea;
+    border-radius: 10px;
+    margin-bottom: 28px;
+    overflow: hidden;
+    display: none;
+  }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #2c5364, #00c2a8);
+    border-radius: 10px;
+    transition: width 0.4s ease;
+  }
+
+  /* Screens */
+  .screen {
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .screen.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Start screen */
+  .badge {
+    display: inline-block;
+    background: #eafaf7;
+    color: #00998a;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+
+  h1 {
+    font-size: 26px;
+    line-height: 1.35;
+    color: #10262e;
+    margin-bottom: 14px;
+  }
+
+  .subtext {
+    font-size: 15px;
+    color: #566;
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+
+  .start-btn {
+    width: 100%;
+    padding: 18px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(90deg, #00998a, #00c2a8);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0,153,138,0.3);
+    transition: transform 0.15s ease;
+  }
+
+  .start-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .disclaimer {
+    font-size: 11px;
+    color: #999;
+    text-align: center;
+    margin-top: 16px;
+  }
+
+  /* Question screens */
+  .q-number {
+    font-size: 13px;
+    color: #00998a;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+
+  .question {
+    font-size: 21px;
+    color: #10262e;
+    margin-bottom: 22px;
+    line-height: 1.4;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .option-btn {
+    width: 100%;
+    padding: 18px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #10262e;
+    background: #f6f8f9;
+    border: 2px solid #e5e9ea;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+  }
+
+  .option-btn:hover {
+    border-color: #00c2a8;
+    background: #eafaf7;
+    transform: translateX(4px);
+  }
+
+  .option-btn.selected {
+    border-color: #00998a;
+    background: #d9f5ef;
+  }
+
+  /* Loader screen */
+  .loader-screen {
+    text-align: center;
+    padding: 60px 10px;
+  }
+
+  .spinner {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 26px;
+    border: 6px solid #eafaf7;
+    border-top: 6px solid #00998a;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .loader-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: #10262e;
+    margin-bottom: 8px;
+  }
+
+  .loader-sub {
+    font-size: 14px;
+    color: #778;
+  }
+
+  .fine-print {
+    font-size: 10px;
+    color: #bbb;
+    text-align: center;
+    margin-top: 24px;
+    line-height: 1.4;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- START SCREEN -->
+  <div class="screen active" id="screen-start">
+    <span class="badge">60-Second Check</span>
+    <h1>There's a credit move most people have never heard of — and it's not a loan or a repair service.</h1>
+    <p class="subtext">Answer a few quick questions and we'll show you whether this overlooked method could work for your situation.</p>
+    <button class="start-btn" onclick="startQuiz()">Show Me →</button
