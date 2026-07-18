@@ -1,0 +1,230 @@
+=<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Is Your Credit Score Stuck? Find Out Now</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    background: linear-gradient(135deg, #1a2540 0%, #0d1321 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 560px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    overflow: hidden;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    padding: 20px 24px 0 24px;
+    display: none;
+  }
+
+  .progress-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: #e8ecf3;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2b6cff, #4f8cff);
+    border-radius: 10px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  .progress-label {
+    text-align: right;
+    font-size: 12px;
+    color: #8a93a6;
+    margin-top: 6px;
+    font-weight: 600;
+  }
+
+  /* SCREENS */
+  .screen {
+    display: none;
+    flex: 1;
+    flex-direction: column;
+    padding: 36px 30px;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .screen.active {
+    display: flex;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* START SCREEN */
+  #start-screen {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .badge {
+    background: #eaf1ff;
+    color: #2b6cff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+    letter-spacing: 0.3px;
+  }
+
+  h1 {
+    font-size: 26px;
+    color: #14213d;
+    line-height: 1.35;
+    margin-bottom: 14px;
+    font-weight: 800;
+  }
+
+  .subtext {
+    font-size: 15.5px;
+    color: #5c6579;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    max-width: 420px;
+  }
+
+  .start-btn {
+    background: linear-gradient(90deg, #2b6cff, #1e56d6);
+    color: white;
+    border: none;
+    padding: 18px 40px;
+    font-size: 17px;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(43,108,255,0.35);
+    transition: transform 0.15s ease;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .start-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .trust-line {
+    margin-top: 20px;
+    font-size: 12.5px;
+    color: #a3abbd;
+  }
+
+  /* QUESTION SCREENS */
+  .q-eyebrow {
+    font-size: 13px;
+    font-weight: 700;
+    color: #2b6cff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+
+  .q-headline {
+    font-size: 22px;
+    color: #14213d;
+    font-weight: 800;
+    line-height: 1.4;
+    margin-bottom: 26px;
+  }
+
+  .answers {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .answer-btn {
+    background: #f4f6fa;
+    border: 2px solid #eef1f6;
+    border-radius: 14px;
+    padding: 20px 22px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #24304a;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .answer-btn:hover {
+    background: #eaf1ff;
+    border-color: #2b6cff;
+    transform: translateX(4px);
+  }
+
+  .answer-btn .arrow {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    color: #2b6cff;
+    font-size: 18px;
+  }
+
+  .answer-btn:hover .arrow {
+    opacity: 1;
+  }
+
+  .answer-btn.selected {
+    background: #2b6cff;
+    color: white;
+    border-color: #2b6cff;
+  }
+
+  /* LOADER SCREEN */
+  #loader-screen {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .spinner {
+    width: 56px;
+    height: 56px;
+    border: 5px solid #eaf1ff;
+    border-top: 5px solid #2b6cff;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+    margin-bottom: 26px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .loader-title {
+    font-size: 19px;
+    font-weight: 800;
+    color: #14213d;
