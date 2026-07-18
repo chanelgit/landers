@@ -1,0 +1,425 @@
+=<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>See What Your Credit Score Could Look Like in 90 Days</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(135deg, #0f2027 0%, #1b3a4b 50%, #16495e 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 480px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    overflow: hidden;
+    min-height: 560px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    width: 100%;
+    height: 8px;
+    background: #e7edf0;
+    display: none;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #1fa672, #17c98a);
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  /* SCREENS */
+  .screen {
+    display: none;
+    flex-direction: column;
+    padding: 36px 28px;
+    flex: 1;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .screen.active {
+    display: flex;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* START SCREEN */
+  #screen-start {
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(180deg, #ffffff 0%, #f4f9f7 100%);
+  }
+
+  .badge {
+    display: inline-block;
+    background: #e6f7ef;
+    color: #17925a;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin: 0 auto 18px auto;
+    letter-spacing: 0.3px;
+  }
+
+  .start-headline {
+    font-size: 26px;
+    font-weight: 800;
+    color: #102b26;
+    line-height: 1.3;
+    margin-bottom: 14px;
+  }
+
+  .start-sub {
+    font-size: 15px;
+    color: #52645f;
+    line-height: 1.5;
+    margin-bottom: 28px;
+  }
+
+  .score-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 30px;
+  }
+
+  .score-box {
+    text-align: center;
+  }
+
+  .score-num {
+    font-size: 30px;
+    font-weight: 800;
+  }
+
+  .score-num.before { color: #c94b4b; }
+  .score-num.after { color: #17925a; }
+
+  .score-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #93a29d;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  .arrow-icon {
+    font-size: 22px;
+    color: #17925a;
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    border: none;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .btn-primary {
+    background: linear-gradient(90deg, #17c98a, #10a874);
+    color: #ffffff;
+    box-shadow: 0 8px 20px rgba(23,201,138,0.35);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(23,201,138,0.45);
+  }
+
+  .start-note {
+    margin-top: 16px;
+    font-size: 12px;
+    color: #9aa8a3;
+  }
+
+  /* QUESTION SCREENS */
+  .q-header {
+    margin-bottom: 24px;
+  }
+
+  .q-count {
+    font-size: 13px;
+    font-weight: 700;
+    color: #17925a;
+    margin-bottom: 10px;
+    letter-spacing: 0.3px;
+  }
+
+  .q-title {
+    font-size: 21px;
+    font-weight: 800;
+    color: #102b26;
+    line-height: 1.35;
+  }
+
+  .answers {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .answer-btn {
+    background: #f5f8f7;
+    border: 2px solid #e6ede9;
+    border-radius: 14px;
+    padding: 18px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1b332c;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .answer-btn:hover {
+    border-color: #17c98a;
+    background: #ecfaf3;
+    transform: translateX(2px);
+  }
+
+  .answer-btn.selected {
+    border-color: #17925a;
+    background: #dff5e9;
+  }
+
+  .answer-btn .chevron {
+    color: #b7c4bf;
+    font-size: 18px;
+  }
+
+  /* LOADER SCREEN */
+  #screen-loading {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .spinner {
+    width: 56px;
+    height: 56px;
+    border: 5px solid #e6ede9;
+    border-top: 5px solid #17c98a;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+    margin-bottom: 24px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .loading-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: #102b26;
+    margin-bottom: 8px;
+  }
+
+  .loading-sub {
+    font-size: 14px;
+    color: #75857f;
+  }
+
+  .loading-bar-track {
+    width: 100%;
+    max-width: 220px;
+    height: 6px;
+    background: #e6ede9;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 22px;
+  }
+
+  .loading-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #17c98a, #10a874);
+    border-radius: 10px;
+    animation: loadFill 2.2s ease forwards;
+  }
+
+  @keyframes loadFill {
+    0% { width: 0%; }
+    100% { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- START SCREEN -->
+  <div class="screen active" id="screen-start">
+    <div class="badge">FREE 60-SECOND CHECK</div>
+    <div class="start-headline">See What Your Credit Could Look Like 90 Days From Now</div>
+    <p class="start-sub">Answer a few quick questions and picture the moment you stop getting denied — approved for the apartment, the car, the card — without a hard credit pull today.</p>
+
+    <div class="score-preview">
+      <div class="score-box">
+        <div class="score-num before">580</div>
+        <div class="score-label">Today</div>
+      </div>
+      <div class="arrow-icon">&#8594;</div>
+      <div class="score-box">
+        <div class="score-num after">690</div>
+        <div class="score-label">In 90 Days*</div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="goToQuestion(1)">Start My Free Check</button>
+    <div class="start-note">No hard inquiry. No cost to check. Takes under a minute.</div>
+  </div>
+
+  <!-- QUESTION 1 -->
+  <div class="screen" id="screen-q1">
+    <div class="q-header">
+      <div class="q-count">Question 1 of 4</div>
+      <div class="q-title">What are you hoping to finally get approved for?</div>
+    </div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(this,2)">An apartment, no cosigner needed <span class="chevron">&#8250;</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,2)">A car with a fair interest rate <span class="chevron">&#8250;</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,2)">A real credit card, not a secured one <span class="chevron">&#8250;</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,2)">Just peace of mind about my score <span class="chevron">&#8250;</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 2 -->
+  <div class="screen" id="screen-q2">
+    <div class="q-header">
+      <div class="q-count">Question 2 of 4</div>
+      <div class="q-title">Where would you say your credit stands today?</div>
+    </div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(this,3)">Under 580 <span class="chevron">&#8250;</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,3)">580–650 <span class="chevron">&#8250;</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,3)">650–700 <span class="chevron">&#8250;</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,3)">Honestly, not sure <span class="chevron">&#8250;</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 3 -->
+  <div class="screen" id="screen-q3">
+    <div class="q-header">
+      <div class="q-count">Question 3 of 4</div>
+      <div class="q-title">Have you tried "fixing" it before with little to show for it?</div>
+    </div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(this,4)">Paid a credit repair company, saw nothing <span class="chevron">&#8250;</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,4)">Tried disputing letters myself <span class="chevron">&#8250;</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,4)">Got a secured card, still stuck <span class="chevron">&#8250;</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,4)">Haven't tried anything yet <span class="chevron">&#8250;</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 4 -->
+  <div class="screen" id="screen-q4">
+    <div class="q-header">
+      <div class="q-count">Question 4 of 4</div>
+      <div class="q-title">If your score went up 60+ points, what would change first?</div>
+    </div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(this,'loading')">I'd finally get my own lease <span class="chevron">&#8250;</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'loading')">I'd stop stressing every time I check my score <span class="chevron">&#8250;</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'loading')">I'd qualify without a cosigner or big deposit <span class="chevron">&#8250;</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'loading')">I'd feel like I'm finally moving forward <span class="chevron">&#8250;</span></button>
+    </div>
+  </div>
+
+  <!-- LOADING SCREEN -->
+  <div class="screen" id="screen-loading">
+    <div class="spinner"></div>
+    <div class="loading-text">Finding your results...</div>
+    <div class="loading-sub">Matching your answers to a credit-building path</div>
+    <div class="loading-bar-track">
+      <div class="loading-bar-fill"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ======= CONFIG =======
+  const OFFER_URL = "https://your-offer-tracking-link.com/credit-builder"; // <-- REPLACE WITH REAL OFFER/TRACKING URL
+
+  const totalQuestions = 4;
+  const progressWrap = document.getElementById('progressWrap');
+  const progressBar = document.getElementById('progressBar');
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function updateProgress(qNum) {
+    progressWrap.style.display = 'block';
+    const pct = (qNum / totalQuestions) * 100;
+    progressBar.style.width = pct + '%';
+  }
+
+  function goToQuestion(qNum) {
+    updateProgress(qNum);
+    showScreen('screen-q' + qNum);
+  }
+
+  function selectAnswer(btn, next) {
+    // visual feedback
+    const siblings = btn.parentElement.querySelectorAll('.answer-btn');
+    siblings.forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+
+    setTimeout(() => {
+      if (next === 'loading') {
+        progressBar.style.width = '100%';
+        showScreen('screen-loading');
+        setTimeout(() => {
+          window.location.href = OFFER_URL;
+        }, 2300);
+      } else {
+        goToQuestion(next);
+      }
+    }, 350);
+  }
+</script>
+
+</body>
+</html>
