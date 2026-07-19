@@ -1,0 +1,391 @@
+=<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Credit Check-In — See What's Really Hurting Your Score</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(135deg, #1a1f36 0%, #2d3561 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 480px;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    overflow: hidden;
+    min-height: 560px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    padding: 20px 24px 0 24px;
+    display: none;
+  }
+  .progress-wrap.active { display: block; }
+  .progress-track {
+    width: 100%;
+    height: 8px;
+    background: #eef0f5;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff7a59, #ff4d4d);
+    width: 0%;
+    border-radius: 20px;
+    transition: width 0.4s ease;
+  }
+  .progress-label {
+    font-size: 12px;
+    color: #8a8fa3;
+    margin-top: 8px;
+    text-align: right;
+    font-weight: 600;
+  }
+
+  /* SCREENS */
+  .screen {
+    display: none;
+    flex: 1;
+    flex-direction: column;
+    padding: 32px 28px;
+    animation: fadeIn 0.35s ease;
+  }
+  .screen.active { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* START SCREEN */
+  #screen-start {
+    justify-content: center;
+    text-align: center;
+    background: #ffffff;
+    flex: 1;
+  }
+  .badge {
+    display: inline-block;
+    background: #fff1ee;
+    color: #ff4d4d;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin: 0 auto 18px auto;
+    text-transform: uppercase;
+  }
+  .start-icon {
+    font-size: 46px;
+    margin-bottom: 14px;
+  }
+  h1 {
+    font-size: 24px;
+    color: #1a1f36;
+    line-height: 1.35;
+    margin-bottom: 12px;
+    font-weight: 800;
+  }
+  .subtext {
+    font-size: 15px;
+    color: #6a6f85;
+    line-height: 1.5;
+    margin-bottom: 28px;
+  }
+  .btn-start {
+    background: linear-gradient(90deg, #ff7a59, #ff4d4d);
+    color: #fff;
+    border: none;
+    padding: 18px 24px;
+    font-size: 17px;
+    font-weight: 700;
+    border-radius: 14px;
+    cursor: pointer;
+    box-shadow: 0 10px 24px rgba(255,77,77,0.35);
+    transition: transform 0.15s ease;
+    width: 100%;
+  }
+  .btn-start:active { transform: scale(0.97); }
+  .microcopy {
+    margin-top: 14px;
+    font-size: 12.5px;
+    color: #a3a8bd;
+  }
+
+  /* QUESTION SCREENS */
+  .q-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #1a1f36;
+    line-height: 1.4;
+    margin: 22px 0 22px 0;
+  }
+  .answers {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: auto;
+  }
+  .answer-btn {
+    background: #f7f8fb;
+    border: 2px solid #eef0f5;
+    border-radius: 14px;
+    padding: 18px 18px;
+    font-size: 15.5px;
+    font-weight: 600;
+    color: #2b2f45;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .answer-btn:hover {
+    border-color: #ff9d80;
+    background: #fff6f3;
+  }
+  .answer-btn.selected {
+    border-color: #ff4d4d;
+    background: #fff1ee;
+    color: #ff4d4d;
+  }
+  .answer-emoji {
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  /* LOADING SCREEN */
+  #screen-loading {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid #f0f1f6;
+    border-top: 5px solid #ff4d4d;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+    margin-bottom: 26px;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  .loading-title {
+    font-size: 19px;
+    font-weight: 800;
+    color: #1a1f36;
+    margin-bottom: 10px;
+  }
+  .loading-sub {
+    font-size: 14px;
+    color: #8a8fa3;
+    line-height: 1.5;
+  }
+  .loading-steps {
+    margin-top: 22px;
+    text-align: left;
+    width: 100%;
+    max-width: 300px;
+  }
+  .loading-step {
+    font-size: 13.5px;
+    color: #b4b8c8;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.4;
+    transition: opacity 0.3s ease, color 0.3s ease;
+  }
+  .loading-step.done {
+    opacity: 1;
+    color: #2b2f45;
+  }
+  .check {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #e5e7ef;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #fff;
+  }
+  .loading-step.done .check {
+    background: #ff4d4d;
+  }
+
+  .footer-trust {
+    text-align: center;
+    font-size: 11px;
+    color: #c2c5d6;
+    padding: 14px;
+    border-top: 1px solid #f2f3f7;
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-label" id="progressLabel">Question 1 of 4</div>
+  </div>
+
+  <!-- START SCREEN -->
+  <div class="screen active" id="screen-start">
+    <div class="start-icon">😔📱</div>
+    <div class="badge">60-Second Check-In</div>
+    <h1>Denied Again? Let's Find Out What's Really Hurting Your Score.</h1>
+    <p class="subtext">Most people get rejected because of a mistake on their report — not because they did anything wrong. Answer 4 quick questions and we'll show you where to start.</p>
+    <button class="btn-start" onclick="startQuiz()">Start My Check-In →</button>
+    <div class="microcopy">No hard credit check. Takes less than a minute.</div>
+  </div>
+
+  <!-- QUESTION 1 -->
+  <div class="screen" id="screen-q1">
+    <div class="q-title">What's been the most stressful part of your credit situation lately?</div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(1)"><span class="answer-emoji">🏠</span>Getting denied for an apartment</button>
+      <button class="answer-btn" onclick="selectAnswer(1)"><span class="answer-emoji">🚗</span>Stuck with a brutal car loan rate</button>
+      <button class="answer-btn" onclick="selectAnswer(1)"><span class="answer-emoji">💳</span>Card applications keep getting rejected</button>
+      <button class="answer-btn" onclick="selectAnswer(1)"><span class="answer-emoji">😬</span>I'm just scared to even check my score</button>
+    </div>
+  </div>
+
+  <!-- QUESTION 2 -->
+  <div class="screen" id="screen-q2">
+    <div class="q-title">Be honest — how often does this actually keep you up at night?</div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(2)"><span class="answer-emoji">🌙</span>More nights than I'd like to admit</button>
+      <button class="answer-btn" onclick="selectAnswer(2)"><span class="answer-emoji">📱</span>Every time my banking app buzzes</button>
+      <button class="answer-btn" onclick="selectAnswer(2)"><span class="answer-emoji">📅</span>Only when a deadline is coming up</button>
+      <button class="answer-btn" onclick="selectAnswer(2)"><span class="answer-emoji">😞</span>Honestly, all the time</button>
+    </div>
+  </div>
+
+  <!-- QUESTION 3 -->
+  <div class="screen" id="screen-q3">
+    <div class="q-title">Have you already tried something to fix it that didn't really work?</div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(3)"><span class="answer-emoji">💸</span>Paid a "credit repair" company monthly fees</button>
+      <button class="answer-btn" onclick="selectAnswer(3)"><span class="answer-emoji">📄</span>Tried dispute letters from YouTube</button>
+      <button class="answer-btn" onclick="selectAnswer(3)"><span class="answer-emoji">👪</span>Asked family to cosign or add me as authorized user</button>
+      <button class="answer-btn" onclick="selectAnswer(3)"><span class="answer-emoji">🙈</span>Nothing — I've just been avoiding it</button>
+    </div>
+  </div>
+
+  <!-- QUESTION 4 -->
+  <div class="screen" id="screen-q4">
+    <div class="q-title">If we could show you the #1 thing hurting your score right now, would you want to see it?</div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(4)"><span class="answer-emoji">✅</span>Yes, show me right now</button>
+      <button class="answer-btn" onclick="selectAnswer(4)"><span class="answer-emoji">🙏</span>Yes — I need this before my next application</button>
+      <button class="answer-btn" onclick="selectAnswer(4)"><span class="answer-emoji">🤞</span>I hope it's something fixable</button>
+    </div>
+  </div>
+
+  <!-- LOADING SCREEN -->
+  <div class="screen" id="screen-loading">
+    <div class="spinner"></div>
+    <div class="loading-title">Finding your results…</div>
+    <div class="loading-sub">Hang tight — we're matching your answers to what's likely holding your score back.</div>
+    <div class="loading-steps">
+      <div class="loading-step" id="step1"><span class="check">✓</span>Reviewing your answers</div>
+      <div class="loading-step" id="step2"><span class="check">✓</span>Checking common report errors</div>
+      <div class="loading-step" id="step3"><span class="check">✓</span>Matching you with a fix</div>
+    </div>
+  </div>
+
+  <div class="footer-trust">🔒 Your answers are private and used only to personalize your results.</div>
+
+</div>
+
+<script>
+  const totalQuestions = 4;
+  let currentQuestion = 0;
+
+  // ⚠️ PLACEHOLDER — replace with your actual offer/tracking URL
+  const OFFER_URL = "https://your-offer-tracking-link.com/credit-builder";
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function startQuiz() {
+    currentQuestion = 1;
+    document.getElementById('progressWrap').classList.add('active');
+    updateProgress();
+    showScreen('screen-q1');
+  }
+
+  function updateProgress() {
+    const pct = (currentQuestion / totalQuestions) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent =
+      `Question ${currentQuestion} of ${totalQuestions}`;
+  }
+
+  function selectAnswer(qNum) {
+    // Visually mark selection briefly
+    const screen = document.getElementById('screen-q' + qNum);
+    const buttons = screen.querySelectorAll('.answer-btn');
+    buttons.forEach(b => b.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+
+    setTimeout(() => {
+      if (qNum < totalQuestions) {
+        currentQuestion = qNum + 1;
+        updateProgress();
+        showScreen('screen-q' + currentQuestion);
+      } else {
+        finishQuiz();
+      }
+    }, 350);
+  }
+
+  function finishQuiz() {
+    document.getElementById('progressWrap').classList.remove('active');
+    showScreen('screen-loading');
+
+    const steps = ['step1', 'step2', 'step3'];
+    steps.forEach((id, i) => {
+      setTimeout(() => {
+        document.getElementById(id).classList.add('done');
+      }, 500 + i * 700);
+    });
+
+    setTimeout(() => {
+      window.location.href = OFFER_URL;
+    }, 500 + steps.length * 700 + 500);
+  }
+</script>
+
+</body>
+</html>
