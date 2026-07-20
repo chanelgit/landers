@@ -1,0 +1,447 @@
+=<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>See Your Credit Building Plan</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  body {
+    background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 480px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+    min-height: 520px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    width: 100%;
+    height: 8px;
+    background: #eaeef1;
+    display: none;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  /* Screens */
+  .screen {
+    display: none;
+    flex-direction: column;
+    flex: 1;
+    padding: 36px 28px;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .screen.active {
+    display: flex;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Intro screen */
+  #intro {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .badge {
+    display: inline-block;
+    background: #e8f9ef;
+    color: #16a34a;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+  }
+
+  .intro-headline {
+    font-size: 26px;
+    font-weight: 800;
+    color: #0f2027;
+    line-height: 1.35;
+    margin-bottom: 14px;
+  }
+
+  .intro-sub {
+    font-size: 15px;
+    color: #55636b;
+    line-height: 1.5;
+    margin-bottom: 30px;
+  }
+
+  .score-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 30px;
+  }
+
+  .score-box {
+    background: #f5f7f8;
+    border-radius: 12px;
+    padding: 14px 20px;
+    text-align: center;
+  }
+
+  .score-box .label {
+    font-size: 11px;
+    color: #8a97a0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .score-box .num {
+    font-size: 24px;
+    font-weight: 800;
+    margin-top: 4px;
+  }
+
+  .score-box.before .num { color: #ef4444; }
+  .score-box.after .num { color: #16a34a; }
+
+  .arrow-icon {
+    font-size: 22px;
+    color: #16a34a;
+    font-weight: 800;
+  }
+
+  .start-btn {
+    width: 100%;
+    background: linear-gradient(90deg, #16a34a, #22c55e);
+    color: white;
+    border: none;
+    padding: 18px;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(22,163,74,0.35);
+    transition: transform 0.15s ease;
+  }
+
+  .start-btn:active {
+    transform: scale(0.97);
+  }
+
+  .disclaimer {
+    font-size: 11px;
+    color: #a3aeb5;
+    margin-top: 16px;
+  }
+
+  /* Question screens */
+  .q-header {
+    margin-bottom: 26px;
+  }
+
+  .q-count {
+    font-size: 12px;
+    font-weight: 700;
+    color: #16a34a;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+
+  .q-headline {
+    font-size: 21px;
+    font-weight: 800;
+    color: #0f2027;
+    line-height: 1.35;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .option-btn {
+    background: #f5f7f8;
+    border: 2px solid transparent;
+    border-radius: 14px;
+    padding: 18px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #263238;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .option-btn:hover {
+    background: #eaf7ef;
+    border-color: #22c55e;
+  }
+
+  .option-btn.selected {
+    background: #16a34a;
+    color: white;
+    border-color: #16a34a;
+  }
+
+  .option-btn .chev {
+    opacity: 0.4;
+    font-size: 18px;
+  }
+
+  /* Loader screen */
+  #loading {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .spinner {
+    width: 56px;
+    height: 56px;
+    border: 5px solid #eaeef1;
+    border-top: 5px solid #16a34a;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+    margin-bottom: 24px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .loading-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f2027;
+    margin-bottom: 8px;
+  }
+
+  .loading-sub {
+    font-size: 14px;
+    color: #8a97a0;
+  }
+
+  .loading-steps {
+    margin-top: 26px;
+    text-align: left;
+    width: 100%;
+  }
+
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #55636b;
+    margin-bottom: 10px;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+  }
+
+  .step.active {
+    opacity: 1;
+    color: #16a34a;
+    font-weight: 600;
+  }
+
+  .step .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="screen active" id="intro">
+    <span class="badge">Free · 30 Seconds</span>
+    <div class="score-visual">
+      <div class="score-box before">
+        <div class="label">Before</div>
+        <div class="num">580</div>
+      </div>
+      <div class="arrow-icon">→</div>
+      <div class="score-box after">
+        <div class="label">After</div>
+        <div class="num">680</div>
+      </div>
+    </div>
+    <div class="intro-headline">What Does Life Look Like With a Score 100 Points Higher?</div>
+    <div class="intro-sub">Approved applications. Lower interest. No more explaining yourself. Answer 4 quick questions and see the plan that gets you there — no upfront cost, no credit repair sales pitch.</div>
+    <button class="start-btn" onclick="startQuiz()">Show Me My Plan →</button>
+    <div class="disclaimer">No cost to check. No impact to your score.</div>
+  </div>
+
+  <!-- QUESTION 1 -->
+  <div class="screen" id="q1">
+    <div class="q-header">
+      <div class="q-count">Question 1 of 4</div>
+      <div class="q-headline">What's the first thing you want approved for again?</div>
+    </div>
+    <div class="options">
+      <button class="option-btn" onclick="selectAnswer(this,'q2')">An apartment, no cosigner needed <span class="chev">›</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q2')">A car with a decent interest rate <span class="chev">›</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q2')">A credit card without the anxiety <span class="chev">›</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q2')">Just peace of mind again <span class="chev">›</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 2 -->
+  <div class="screen" id="q2">
+    <div class="q-header">
+      <div class="q-count">Question 2 of 4</div>
+      <div class="q-headline">How does checking your credit make you feel right now?</div>
+    </div>
+    <div class="options">
+      <button class="option-btn" onclick="selectAnswer(this,'q3')">Anxious — I avoid looking <span class="chev">›</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q3')">Frustrated — I don't know what's hurting it <span class="chev">›</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q3')">Hopeful — I just need a real plan <span class="chev">›</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q3')">Numb — I've stopped trying <span class="chev">›</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 3 -->
+  <div class="screen" id="q3">
+    <div class="q-header">
+      <div class="q-count">Question 3 of 4</div>
+      <div class="q-headline">What have you already tried to fix it?</div>
+    </div>
+    <div class="options">
+      <button class="option-btn" onclick="selectAnswer(this,'q4')">Paid a credit repair company <span class="chev">›</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q4')">A secured card, but wasn't sure how to use it <span class="chev">›</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q4')">YouTube videos and free advice <span class="chev">›</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q4')">Honestly, nothing yet <span class="chev">›</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 4 -->
+  <div class="screen" id="q4">
+    <div class="q-header">
+      <div class="q-count">Question 4 of 4</div>
+      <div class="q-headline">How soon do you want to see your score start moving?</div>
+    </div>
+    <div class="options">
+      <button class="option-btn" onclick="selectAnswer(this,'loading')">Immediately — I need this now <span class="chev">›</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'loading')">Within 30 days <span class="chev">›</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'loading')">I'm planning ahead for later this year <span class="chev">›</span></button>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="screen" id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">Finding your results…</div>
+    <div class="loading-sub">Building your personalized credit plan</div>
+    <div class="loading-steps">
+      <div class="step" id="step1"><span class="dot"></span> Reviewing your answers</div>
+      <div class="step" id="step2"><span class="dot"></span> Matching you with a builder plan</div>
+      <div class="step" id="step3"><span class="dot"></span> Preparing your free score path</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ---- CONFIG ----
+  const REDIRECT_URL = "https://example.com/offer"; // <-- Replace with your tracking/offer URL
+  const totalQuestions = 4;
+  let currentQuestion = 0;
+
+  const progressWrap = document.getElementById('progressWrap');
+  const progressBar = document.getElementById('progressBar');
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function startQuiz() {
+    progressWrap.style.display = 'block';
+    currentQuestion = 1;
+    updateProgress();
+    showScreen('q1');
+  }
+
+  function updateProgress() {
+    const pct = (currentQuestion / totalQuestions) * 100;
+    progressBar.style.width = pct + '%';
+  }
+
+  function selectAnswer(btn, nextScreenId) {
+    // visually mark selection
+    const siblings = btn.parentElement.querySelectorAll('.option-btn');
+    siblings.forEach(s => s.classList.remove('selected'));
+    btn.classList.add('selected');
+
+    // advance after short delay for feedback
+    setTimeout(() => {
+      if (nextScreenId === 'loading') {
+        showScreen('loading');
+        runLoadingSequence();
+      } else {
+        currentQuestion++;
+        updateProgress();
+        showScreen(nextScreenId);
+      }
+    }, 350);
+  }
+
+  function runLoadingSequence() {
+    progressBar.style.width = '100%';
+    const steps = ['step1', 'step2', 'step3'];
+    steps.forEach((id, i) => {
+      setTimeout(() => {
+        document.getElementById(id).classList.add('active');
+      }, 500 + i * 700);
+    });
+
+    setTimeout(() => {
+      window.location.href = REDIRECT_URL;
+    }, 500 + steps.length * 700 + 600);
+  }
+</script>
+
+</body>
+</html>
