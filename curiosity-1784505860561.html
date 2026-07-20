@@ -1,0 +1,399 @@
+=<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Credit Trick Almost Nobody Talks About</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(135deg, #0f1b2b 0%, #1a2c47 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: #fff;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 520px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    overflow: hidden;
+    color: #1a2c47;
+    position: relative;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    width: 100%;
+    height: 8px;
+    background: #e9edf3;
+    display: none;
+  }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #2d6cdf, #35c2c1);
+    transition: width 0.4s ease;
+  }
+
+  .screen {
+    display: none;
+    padding: 40px 32px;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .screen.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* START SCREEN */
+  #screen-start {
+    text-align: center;
+    padding: 48px 32px;
+  }
+
+  .eyebrow {
+    display: inline-block;
+    background: #eef4ff;
+    color: #2d6cdf;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+
+  h1 {
+    font-size: 26px;
+    line-height: 1.35;
+    color: #12203a;
+    margin-bottom: 14px;
+    font-weight: 800;
+  }
+
+  .subtext {
+    font-size: 15.5px;
+    color: #52607a;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+
+  .start-btn {
+    background: linear-gradient(90deg, #2d6cdf, #35c2c1);
+    color: #fff;
+    border: none;
+    padding: 18px 36px;
+    font-size: 17px;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 10px 24px rgba(45,108,223,0.35);
+    transition: transform 0.15s ease;
+  }
+
+  .start-btn:active {
+    transform: scale(0.97);
+  }
+
+  .microcopy {
+    margin-top: 16px;
+    font-size: 12.5px;
+    color: #9aa5b8;
+  }
+
+  /* QUESTION SCREENS */
+  .q-count {
+    font-size: 13px;
+    font-weight: 700;
+    color: #2d6cdf;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+
+  .q-title {
+    font-size: 21px;
+    font-weight: 800;
+    color: #12203a;
+    line-height: 1.4;
+    margin-bottom: 26px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .option-btn {
+    background: #f5f7fb;
+    border: 2px solid #e9edf3;
+    border-radius: 14px;
+    padding: 18px 20px;
+    font-size: 15.5px;
+    font-weight: 600;
+    color: #1a2c47;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .option-btn:hover {
+    border-color: #2d6cdf;
+    background: #eef4ff;
+  }
+
+  .option-btn.selected {
+    border-color: #2d6cdf;
+    background: #2d6cdf;
+    color: #fff;
+  }
+
+  .option-btn .arrow {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    font-size: 18px;
+  }
+
+  .option-btn:hover .arrow {
+    opacity: 0.6;
+  }
+
+  /* LOADING SCREEN */
+  #screen-loading {
+    text-align: center;
+    padding: 70px 32px;
+  }
+
+  .spinner {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 28px;
+    border: 5px solid #e9edf3;
+    border-top: 5px solid #2d6cdf;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .loading-title {
+    font-size: 19px;
+    font-weight: 800;
+    color: #12203a;
+    margin-bottom: 10px;
+  }
+
+  .loading-sub {
+    font-size: 14.5px;
+    color: #7a869c;
+    margin-bottom: 26px;
+  }
+
+  .fake-progress-wrap {
+    width: 100%;
+    height: 10px;
+    background: #e9edf3;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .fake-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #2d6cdf, #35c2c1);
+    border-radius: 10px;
+    animation: loadProgress 2.4s ease forwards;
+  }
+
+  @keyframes loadProgress {
+    0% { width: 0%; }
+    30% { width: 40%; }
+    65% { width: 72%; }
+    100% { width: 100%; }
+  }
+
+  .loading-steps {
+    margin-top: 22px;
+    text-align: left;
+    font-size: 13.5px;
+    color: #52607a;
+    line-height: 2;
+  }
+
+  .loading-steps span {
+    color: #2d6cdf;
+    font-weight: 700;
+  }
+
+  @media (max-width: 480px) {
+    h1 { font-size: 22px; }
+    .q-title { font-size: 19px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- START SCREEN -->
+  <div class="screen active" id="screen-start">
+    <div class="eyebrow">60-Second Check</div>
+    <h1>There's a Quiet Reason Some People's Credit Scores Jump &mdash; And Most Never Hear About It.</h1>
+    <p class="subtext">It's not a loophole. It's not "delete your debt." It's a small, overlooked detail in how scores actually get calculated &mdash; and it's usually the first thing that's wrong. Answer a few quick questions and we'll show you where you likely stand.</p>
+    <button class="start-btn" onclick="startQuiz()">Show Me What It Is →</button>
+    <p class="microcopy">Free • Takes under a minute • No credit card needed</p>
+  </div>
+
+  <!-- QUESTION 1 -->
+  <div class="screen" id="screen-q1">
+    <div class="q-count">Question 1 of 4</div>
+    <div class="q-title">What's mainly holding your score back right now?</div>
+    <div class="options">
+      <button class="option-btn" onclick="selectAnswer(this,'q2')">Late or missed payments <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q2')">Maxed out or high balances <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q2')">Barely any credit history <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q2')">Honestly... not sure <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 2 -->
+  <div class="screen" id="screen-q2">
+    <div class="q-count">Question 2 of 4</div>
+    <div class="q-title">Have you ever been declined for something because of your credit?</div>
+    <div class="options">
+      <button class="option-btn" onclick="selectAnswer(this,'q3')">Yes, an apartment <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q3')">Yes, a car or loan <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q3')">Not yet, but I'm worried I will be <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q3')">No, just want a better rate <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 3 -->
+  <div class="screen" id="screen-q3">
+    <div class="q-count">Question 3 of 4</div>
+    <div class="q-title">What have you already tried to fix it?</div>
+    <div class="options">
+      <button class="option-btn" onclick="selectAnswer(this,'q4')">Paid a credit repair company <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q4')">Got a secured card, unsure if it's working <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q4')">Watched videos, never took action <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q4')">Nothing yet <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 4 -->
+  <div class="screen" id="screen-q4">
+    <div class="q-count">Question 4 of 4</div>
+    <div class="q-title">If there was one overlooked detail quietly boosting other people's scores &mdash; would you want to know it?</div>
+    <div class="options">
+      <button class="option-btn" onclick="selectAnswer(this,'loading')">Yes, show me now <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'loading')">Yes, I've been stuck for a while <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'loading')">I'm curious, let's see <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <!-- LOADING SCREEN -->
+  <div class="screen" id="screen-loading">
+    <div class="spinner"></div>
+    <div class="loading-title">Finding your results...</div>
+    <div class="loading-sub">Matching your answers to what's likely affecting your score</div>
+    <div class="fake-progress-wrap">
+      <div class="fake-progress-bar"></div>
+    </div>
+    <div class="loading-steps">
+      <div><span>✓</span> Reviewing your answers</div>
+      <div><span>✓</span> Checking common score factors</div>
+      <div><span>✓</span> Preparing your personalized next step</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const totalQuestions = 4;
+  let currentStep = 0;
+
+  const screens = {
+    start: document.getElementById('screen-start'),
+    q1: document.getElementById('screen-q1'),
+    q2: document.getElementById('screen-q2'),
+    q3: document.getElementById('screen-q3'),
+    q4: document.getElementById('screen-q4'),
+    loading: document.getElementById('screen-loading')
+  };
+
+  const progressWrap = document.getElementById('progressWrap');
+  const progressBar = document.getElementById('progressBar');
+
+  function showScreen(id) {
+    Object.values(screens).forEach(s => s.classList.remove('active'));
+    screens[id].classList.add('active');
+  }
+
+  function startQuiz() {
+    progressWrap.style.display = 'block';
+    currentStep = 1;
+    updateProgress();
+    showScreen('q1');
+  }
+
+  function updateProgress() {
+    const pct = (currentStep / totalQuestions) * 100;
+    progressBar.style.width = pct + '%';
+  }
+
+  function selectAnswer(btn, nextScreenId) {
+    const parent = btn.parentElement;
+    Array.from(parent.children).forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+
+    setTimeout(() => {
+      if (nextScreenId === 'loading') {
+        progressBar.style.width = '100%';
+        showScreen('loading');
+        setTimeout(redirectToOffer, 2600);
+      } else {
+        currentStep++;
+        updateProgress();
+        showScreen(nextScreenId);
+      }
+    }, 350);
+  }
+
+  function redirectToOffer() {
+    // Replace this URL with your tracking / offer link
+    window.location.href = "https://your-offer-tracking-link.com/credit-builder";
+  }
+</script>
+
+</body>
+</html>
