@@ -1,0 +1,372 @@
+=<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Score Trick Most People Never Find Out About</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
+  }
+
+  body {
+    background: linear-gradient(135deg, #0f1c2e 0%, #1a2f4a 50%, #0f1c2e 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 500px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    overflow: hidden;
+    position: relative;
+    min-height: 560px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    width: 100%;
+    height: 8px;
+    background: #e9edf2;
+    display: none;
+  }
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ffb703, #fb8500);
+    transition: width 0.4s ease;
+  }
+
+  /* SCREENS */
+  .screen {
+    display: none;
+    flex-direction: column;
+    flex: 1;
+    padding: 36px 30px;
+    animation: fadeIn 0.4s ease;
+  }
+  .screen.active {
+    display: flex;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* START SCREEN */
+  #screen-start {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(160deg, #0f1c2e, #1e3a5f);
+    color: #fff;
+  }
+
+  .eyebrow {
+    background: rgba(255,183,3,0.15);
+    color: #ffb703;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+    border: 1px solid rgba(255,183,3,0.4);
+  }
+
+  #screen-start h1 {
+    font-size: 26px;
+    line-height: 1.35;
+    margin-bottom: 14px;
+    font-weight: 800;
+  }
+
+  #screen-start p {
+    font-size: 15px;
+    color: #cfd8e3;
+    line-height: 1.5;
+    margin-bottom: 28px;
+  }
+
+  .start-btn {
+    background: linear-gradient(90deg, #ffb703, #fb8500);
+    color: #0f1c2e;
+    border: none;
+    padding: 18px 40px;
+    font-size: 17px;
+    font-weight: 800;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(251,133,0,0.4);
+    transition: transform 0.15s ease;
+    width: 100%;
+  }
+  .start-btn:hover { transform: scale(1.03); }
+
+  .disclaimer-mini {
+    margin-top: 18px;
+    font-size: 11px;
+    color: #7c8ba1;
+  }
+
+  /* QUESTION SCREENS */
+  .q-number {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fb8500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .q-headline {
+    font-size: 21px;
+    font-weight: 800;
+    color: #0f1c2e;
+    line-height: 1.4;
+    margin-bottom: 26px;
+  }
+
+  .answers {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .answer-btn {
+    background: #f4f7fb;
+    border: 2px solid #e3e9f0;
+    color: #0f1c2e;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 18px 20px;
+    border-radius: 14px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .answer-btn:hover {
+    border-color: #fb8500;
+    background: #fff6e9;
+    transform: translateX(2px);
+  }
+
+  .answer-btn.selected {
+    background: #ffb703;
+    border-color: #fb8500;
+    color: #0f1c2e;
+  }
+
+  .answer-btn .arrow {
+    opacity: 0;
+    transition: opacity 0.2s;
+    font-size: 18px;
+  }
+  .answer-btn:hover .arrow { opacity: 1; }
+
+  /* LOADING SCREEN */
+  #screen-loading {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #ffffff;
+  }
+
+  .spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid #eef2f6;
+    border-top: 6px solid #fb8500;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+    margin-bottom: 24px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  #screen-loading h2 {
+    font-size: 19px;
+    color: #0f1c2e;
+    margin-bottom: 8px;
+    font-weight: 800;
+  }
+
+  #screen-loading p {
+    font-size: 14px;
+    color: #67748c;
+  }
+
+  .loading-steps {
+    margin-top: 22px;
+    text-align: left;
+    font-size: 13px;
+    color: #8a95a8;
+  }
+  .loading-steps div {
+    padding: 5px 0;
+    opacity: 0.4;
+  }
+  .loading-steps div.done {
+    opacity: 1;
+    color: #2ea043;
+    font-weight: 600;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- START SCREEN -->
+  <div class="screen active" id="screen-start">
+    <div class="eyebrow">Uncovered This Week</div>
+    <h1>There's a Quiet Reason Some Scores Jump 50–100 Points... and Most People Never Stumble Onto It.</h1>
+    <p>Take this 30-second check to see if the same unusual pattern applies to your credit file — before you spend another dollar trying to fix it the hard way.</p>
+    <button class="start-btn" onclick="goToScreen('q1')">Show Me →</button>
+    <div class="disclaimer-mini">No credit card. No phone calls. Just answers.</div>
+  </div>
+
+  <!-- QUESTION 1 -->
+  <div class="screen" id="q1">
+    <div class="q-number">Question 1 of 4</div>
+    <div class="q-headline">Have you ever been denied for something and had no idea why your score was the reason?</div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(this,'q2')">Yes, more than once <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'q2')">Yes, one time that stuck with me <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'q2')">No, but I'm scared it'll happen <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'q2')">Not sure — I don't check my score <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 2 -->
+  <div class="screen" id="q2">
+    <div class="q-number">Question 2 of 4</div>
+    <div class="q-headline">Here's the part most people miss: your score can move even without a big new loan. Did you know that?</div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(this,'q3')">No — that's news to me <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'q3')">I've heard something like that <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'q3')">I tried it and it didn't work <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 3 -->
+  <div class="screen" id="q3">
+    <div class="q-number">Question 3 of 4</div>
+    <div class="q-headline">What have you already tried to fix it?</div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(this,'q4')">Paid a credit repair company <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'q4')">Disputed items myself <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'q4')">Got a secured card <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'q4')">Nothing yet <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 4 -->
+  <div class="screen" id="q4">
+    <div class="q-number">Question 4 of 4</div>
+    <div class="q-headline">If there was a quiet, no-fee way to see this "hidden path" for your own file right now — would you want to see it?</div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(this,'loading')">Yes, show me now <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'loading')">Yes, but I'm skeptical <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(this,'loading')">Absolutely, I need this <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <!-- LOADING SCREEN -->
+  <div class="screen" id="screen-loading">
+    <div class="spinner"></div>
+    <h2>Finding Your Results...</h2>
+    <p>Matching your answers to the right path</p>
+    <div class="loading-steps" id="loadingSteps">
+      <div id="step1">✓ Analyzing your responses</div>
+      <div id="step2">✓ Checking eligibility factors</div>
+      <div id="step3">✓ Unlocking your match</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const totalQuestions = 4;
+  const progressMap = {
+    'q1': 25,
+    'q2': 50,
+    'q3': 75,
+    'q4': 100
+  };
+
+  function goToScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+
+    const progressWrap = document.getElementById('progressWrap');
+    const progressBar = document.getElementById('progressBar');
+
+    if (progressMap[id]) {
+      progressWrap.style.display = 'block';
+      setTimeout(() => {
+        progressBar.style.width = progressMap[id] + '%';
+      }, 50);
+    } else if (id === 'screen-start') {
+      progressWrap.style.display = 'none';
+    }
+  }
+
+  function selectAnswer(btn, nextScreen) {
+    const parent = btn.parentElement;
+    parent.querySelectorAll('.answer-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+
+    setTimeout(() => {
+      if (nextScreen === 'loading') {
+        goToLoading();
+      } else {
+        goToScreen(nextScreen);
+      }
+    }, 350);
+  }
+
+  function goToLoading() {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-loading').classList.add('active');
+    document.getElementById('progressWrap').style.display = 'none';
+
+    const steps = ['step1', 'step2', 'step3'];
+    steps.forEach((id, i) => {
+      setTimeout(() => {
+        document.getElementById(id).classList.add('done');
+      }, (i + 1) * 600);
+    });
+
+    setTimeout(() => {
+      window.location.href = "https://your-offer-tracking-link.com/offer";
+    }, 2400);
+  }
+</script>
+
+</body>
+</html>
