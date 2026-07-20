@@ -1,0 +1,415 @@
+=<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Credit Trick Most People Never Find Out About</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #0f1226 0%, #1b1f45 50%, #2a1f4d 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    padding: 20px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 480px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 24px;
+    padding: 32px 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glow {
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255,209,102,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    display: none;
+    width: 100%;
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ffd166, #ff9a6c);
+    border-radius: 10px;
+    transition: width 0.4s ease;
+  }
+
+  /* Screens */
+  .screen {
+    display: none;
+    animation: fadeIn 0.45s ease;
+  }
+
+  .screen.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Intro screen */
+  .tag {
+    display: inline-block;
+    background: rgba(255,209,102,0.15);
+    color: #ffd166;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+
+  h1 {
+    font-size: 26px;
+    line-height: 1.35;
+    margin-bottom: 14px;
+    font-weight: 800;
+  }
+
+  .subtext {
+    color: rgba(255,255,255,0.7);
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+
+  .subtext strong {
+    color: #ffd166;
+  }
+
+  .start-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(90deg, #ffd166, #ff9a6c);
+    color: #1a1a2e;
+    border: none;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 8px 24px rgba(255,154,108,0.3);
+  }
+
+  .start-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(255,154,108,0.4);
+  }
+
+  .micro {
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 14px;
+  }
+
+  /* Question screens */
+  .q-count {
+    font-size: 13px;
+    color: #ffd166;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .q-title {
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.4;
+    margin-bottom: 24px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .option-btn {
+    width: 100%;
+    text-align: left;
+    padding: 18px 20px;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    color: #fff;
+    font-size: 15.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .option-btn:hover {
+    background: rgba(255,209,102,0.14);
+    border-color: #ffd166;
+    transform: translateX(4px);
+  }
+
+  .option-btn.selected {
+    background: rgba(255,209,102,0.25);
+    border-color: #ffd166;
+  }
+
+  .option-btn .arrow {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    color: #ffd166;
+  }
+
+  .option-btn:hover .arrow {
+    opacity: 1;
+  }
+
+  /* Loader */
+  .loader-screen {
+    text-align: center;
+    padding: 40px 0;
+  }
+
+  .spinner {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 26px;
+    border: 4px solid rgba(255,255,255,0.1);
+    border-top: 4px solid #ffd166;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .loader-text {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .loader-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+  }
+
+  .loader-bar-wrap {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 24px;
+  }
+
+  .loader-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ffd166, #ff9a6c);
+    animation: loadfill 2.2s ease forwards;
+  }
+
+  @keyframes loadfill {
+    0% { width: 0%; }
+    100% { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="glow"></div>
+
+  <!-- Progress bar (hidden on intro/loader) -->
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- INTRO SCREEN -->
+  <div class="screen active" id="screen-intro">
+    <span class="tag">Takes 30 Seconds</span>
+    <h1>There's a quiet reason some people's scores jump — and no one explains it to you.</h1>
+    <p class="subtext">
+      It's not a loophole. It's not "erasing debt." It's something most credit tools <strong>don't tell you</strong> because it doesn't make them money.
+      Answer a few quick questions and we'll show you where you stand — and what that trick actually is.
+    </p>
+    <button class="start-btn" onclick="startQuiz()">Show Me →</button>
+    <p class="micro">No signup required to see your results</p>
+  </div>
+
+  <!-- QUESTION 1 -->
+  <div class="screen" id="screen-q1">
+    <div class="q-count">Question 1 of 4</div>
+    <div class="q-title">What's the real reason you're checking on this today?</div>
+    <div class="options">
+      <button class="option-btn" onclick="selectAnswer(this,'q2')">Got denied for something recently <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q2')">Trying to plan ahead before I need credit <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q2')">I honestly don't know what's hurting my score <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q2')">Curious if that "trick" people mention is real <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 2 -->
+  <div class="screen" id="screen-q2">
+    <div class="q-count">Question 2 of 4</div>
+    <div class="q-title">Have you ever tried something to fix it that just… didn't work?</div>
+    <div class="options">
+      <button class="option-btn" onclick="selectAnswer(this,'q3')">Paid a credit repair company, saw nothing change <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q3')">Got a secured card but wasn't sure how to use it right <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q3')">Watched a ton of videos but never took action <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q3')">Nope, never tried anything yet <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 3 -->
+  <div class="screen" id="screen-q3">
+    <div class="q-count">Question 3 of 4</div>
+    <div class="q-title">If your score jumped in the next 30 days, what would that unlock first?</div>
+    <div class="options">
+      <button class="option-btn" onclick="selectAnswer(this,'q4')">Getting approved without a cosigner <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q4')">A lower interest rate on something <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q4')">Finally feeling in control of my finances <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'q4')">Just proving to myself I can turn it around <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 4 -->
+  <div class="screen" id="screen-q4">
+    <div class="q-count">Question 4 of 4</div>
+    <div class="q-title">Last one — how soon do you want to actually see this "trick" for yourself?</div>
+    <div class="options">
+      <button class="option-btn" onclick="selectAnswer(this,'loading')">Right now, I'm curious <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'loading')">This week <span class="arrow">→</span></button>
+      <button class="option-btn" onclick="selectAnswer(this,'loading')">I just want to see where I stand first <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <!-- LOADING SCREEN -->
+  <div class="screen" id="screen-loading">
+    <div class="loader-screen">
+      <div class="spinner"></div>
+      <div class="loader-text" id="loaderText">Finding your results...</div>
+      <div class="loader-sub">Matching your answers to what actually moves the needle</div>
+      <div class="loader-bar-wrap">
+        <div class="loader-bar"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ======= CONFIG =======
+  const OFFER_URL = "https://your-offer-tracking-link.com"; // <-- Replace with real offer/tracking URL
+  const TOTAL_QUESTIONS = 4;
+  let currentQuestionIndex = 0;
+
+  const screens = {
+    intro: document.getElementById('screen-intro'),
+    q1: document.getElementById('screen-q1'),
+    q2: document.getElementById('screen-q2'),
+    q3: document.getElementById('screen-q3'),
+    q4: document.getElementById('screen-q4'),
+    loading: document.getElementById('screen-loading')
+  };
+
+  const progressWrap = document.getElementById('progressWrap');
+  const progressBar = document.getElementById('progressBar');
+
+  function showScreen(id) {
+    Object.values(screens).forEach(s => s.classList.remove('active'));
+    screens[id].classList.add('active');
+  }
+
+  function startQuiz() {
+    progressWrap.style.display = 'block';
+    currentQuestionIndex = 1;
+    updateProgress();
+    showScreen('q1');
+  }
+
+  function updateProgress() {
+    const pct = (currentQuestionIndex / TOTAL_QUESTIONS) * 100;
+    progressBar.style.width = pct + '%';
+  }
+
+  function selectAnswer(btnEl, nextScreen) {
+    // visual feedback
+    const parentOptions = btnEl.parentElement.querySelectorAll('.option-btn');
+    parentOptions.forEach(b => b.classList.remove('selected'));
+    btnEl.classList.add('selected');
+
+    // auto-advance after brief delay
+    setTimeout(() => {
+      if (nextScreen === 'loading') {
+        progressBar.style.width = '100%';
+        progressWrap.style.display = 'none';
+        showScreen('loading');
+        runLoaderSequence();
+      } else {
+        currentQuestionIndex++;
+        updateProgress();
+        showScreen(nextScreen);
+      }
+    }, 350);
+  }
+
+  function runLoaderSequence() {
+    const loaderText = document.getElementById('loaderText');
+    const messages = [
+      "Finding your results...",
+      "Comparing your answers...",
+      "Almost there..."
+    ];
+    let i = 0;
+    const interval = setInterval(() => {
+      i++;
+      if (i < messages.length) {
+        loaderText.textContent = messages[i];
+      }
+    }, 700);
+
+    setTimeout(() => {
+      clearInterval(interval);
+      window.location.href = OFFER_URL;
+    }, 2300);
+  }
+</script>
+
+</body>
+</html>
