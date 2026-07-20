@@ -1,0 +1,340 @@
+=<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I Found Out the Truth Too Late — Here's What I Wish I'd Known</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #f7f5f1;
+    color: #2b2b2b;
+    line-height: 1.7;
+  }
+  .container {
+    max-width: 700px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 0 30px rgba(0,0,0,0.08);
+  }
+  .header-bar {
+    background: #1a2b3c;
+    color: #fff;
+    text-align: center;
+    padding: 10px 20px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    font-family: Arial, sans-serif;
+  }
+  .content {
+    padding: 40px 35px 20px;
+  }
+  h1 {
+    font-size: 30px;
+    color: #1a2b3c;
+    text-align: center;
+    line-height: 1.3;
+    margin-bottom: 14px;
+  }
+  .subheadline {
+    font-size: 18px;
+    color: #6b6b6b;
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+  .byline {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #888;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+    margin-bottom: 30px;
+  }
+  .byline span { display: inline-block; margin: 0 8px; }
+  p {
+    font-size: 17px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  .drop-cap:first-letter {
+    font-size: 46px;
+    float: left;
+    line-height: 40px;
+    padding-right: 8px;
+    padding-top: 4px;
+    color: #1a2b3c;
+    font-weight: bold;
+  }
+  .pull-quote {
+    font-size: 21px;
+    font-style: italic;
+    color: #1a2b3c;
+    border-left: 4px solid #b8863b;
+    padding: 10px 20px;
+    margin: 30px 0;
+    background: #faf8f4;
+  }
+  h2 {
+    font-size: 24px;
+    color: #1a2b3c;
+    margin: 35px 0 15px;
+    text-align: center;
+  }
+  .divider {
+    width: 60px;
+    height: 3px;
+    background: #b8863b;
+    margin: 8px auto 25px;
+  }
+  .story-block {
+    background: #faf8f4;
+    border: 1px solid #eee;
+    padding: 25px;
+    border-radius: 6px;
+    margin-bottom: 25px;
+  }
+  .whatisit-box {
+    background: #1a2b3c;
+    color: #f0f0f0;
+    padding: 30px 25px;
+    border-radius: 8px;
+    margin: 25px 0;
+  }
+  .whatisit-box h2 { color: #fff; }
+  .whatisit-box p { color: #d8dee5; }
+  .checklist {
+    list-style: none;
+    margin: 20px 0;
+  }
+  .checklist li {
+    padding: 8px 0 8px 30px;
+    position: relative;
+    font-size: 16px;
+    color: #333;
+  }
+  .checklist li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #b8863b;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .results-box {
+    background: #fff;
+    border: 2px solid #1a2b3c;
+    border-radius: 8px;
+    padding: 25px;
+    margin: 25px 0;
+  }
+  .result-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px dashed #ddd;
+    font-family: Arial, sans-serif;
+  }
+  .result-stat:last-child { border-bottom: none; }
+  .result-stat .label { font-size: 15px; color: #555; }
+  .result-stat .value { font-size: 20px; font-weight: bold; color: #1a2b3c; }
+  .testimonials {
+    margin: 30px 0;
+  }
+  .testimonial {
+    background: #faf8f4;
+    border-left: 4px solid #1a2b3c;
+    padding: 18px 22px;
+    margin-bottom: 18px;
+    border-radius: 4px;
+  }
+  .testimonial p {
+    font-style: italic;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  .testimonial .name {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #888;
+    font-style: normal;
+    text-align: right;
+  }
+  .stars {
+    color: #b8863b;
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+  .urgency-box {
+    background: #fff4e8;
+    border: 2px dashed #b8863b;
+    text-align: center;
+    padding: 25px;
+    border-radius: 8px;
+    margin: 30px 0;
+  }
+  .urgency-box p {
+    font-size: 15px;
+    color: #7a5a1e;
+    margin-bottom: 15px;
+  }
+  .cta-wrap { text-align: center; margin: 20px 0 10px; }
+  .cta-button {
+    display: inline-block;
+    background: linear-gradient(180deg, #2e8b57, #23703f);
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 19px;
+    padding: 18px 45px;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 5px 15px rgba(35,112,63,0.4);
+    transition: transform 0.15s ease;
+  }
+  .cta-button:hover { transform: scale(1.03); }
+  .cta-sub {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #999;
+    margin-top: 12px;
+  }
+  .countdown {
+    font-family: Arial, sans-serif;
+    font-size: 22px;
+    font-weight: bold;
+    color: #c0392b;
+    margin-bottom: 8px;
+  }
+  .disclaimer {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #999;
+    padding: 25px 35px 35px;
+    line-height: 1.6;
+    border-top: 1px solid #eee;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header-bar">SPECIAL FEATURE &nbsp;|&nbsp; CONSUMER SAFETY WATCH</div>
+
+<div class="container">
+  <div class="content">
+
+    <h1>He Said He Was "Between Jobs." The Truth Was Sitting in Public Records the Whole Time.</h1>
+    <p class="subheadline">Why thousands of women are quietly checking the people in their lives before it's too late — and how one $50 method is changing what "trust" actually means.</p>
+
+    <div class="byline">
+      <span>By Marianne Cole</span>
+      <span>|</span>
+      <span>Contributing Writer, Life & Relationships</span>
+      <span>|</span>
+      <span>Updated This Week</span>
+    </div>
+
+    <p class="drop-cap">If you've ever lied awake at 1am replaying a conversation, trying to figure out why something didn't add up — you already know the feeling I'm talking about. It's not paranoia. It's that quiet, nagging voice that says "something's off," and no amount of Googling seems to give you a straight answer.</p>
+
+    <p>I hear from women every week who describe the same exhausting cycle: the late-night spiraling, the screenshots saved "just in case," the friends who say "trust your gut" but can't actually help you find anything real. You're not overreacting. You're under-informed — and there's a difference.</p>
+
+    <div class="pull-quote">"I wasn't trying to catch him. I just wanted to stop feeling crazy."</div>
+
+    <h2>The Story Behind This</h2>
+    <div class="divider"></div>
+
+    <div class="story-block">
+      <p>Denise, 44, from Ohio, had been seeing someone for four months. He was charming, attentive, said all the right things. But little details didn't line up — a name that slipped out, a story that changed, a "business trip" that felt rehearsed.</p>
+      <p>She did what most of us do: she Googled him. Nothing useful came up. She checked his social media — mostly private, a few photos, nothing conclusive. She asked a mutual friend, which felt awkward and got her nowhere. She even downloaded one of those free "background check" apps, only to hit a paywall the second she tried to see anything real.</p>
+      <p>"I felt stuck," she told us. "Like everyone else had some secret way of finding things out, and I was just supposed to sit there and hope for the best."</p>
+    </div>
+
+    <h2>The Turning Point</h2>
+    <div class="divider"></div>
+
+    <p>A coworker mentioned, almost in passing, that she'd started running a quick check on anyone new in her life — dates, contractors, even a babysitter she'd found online. Not out of suspicion, she said, but out of habit. "It's like checking a smoke detector," she put it. "You hope you never need it, but you check anyway."</p>
+
+    <p>Denise was skeptical. She assumed it would be expensive, complicated, or one of those services that promises everything and delivers nothing but a sales pitch. But she typed in a name. Waited less than a minute. And what came back changed things immediately.</p>
+
+    <div class="pull-quote">"There it was. An address I didn't recognize, and a marriage record from two years ago. Two years ago — while he was telling me he'd 'never really been serious about anyone.'"</div>
+
+    <h2>What This Actually Is</h2>
+    <div class="divider"></div>
+
+    <div class="whatisit-box">
+      <p>It's not a private investigator. It's not a shady forum full of rumors. It's a simple public records search tool that pulls together information that's technically already out there — scattered across courthouses, county databases, old addresses, and public listings — and puts it in one place you can actually read.</p>
+      <p>Think of it less like "spying" and more like finally being able to see the whole picture instead of piecing together fragments. You type in a name. Within about a minute, it compiles what's publicly available: past addresses, possible criminal or court records, associated phone numbers, and any social profiles linked to that identity.</p>
+      <p>No confrontation. No awkward questions to mutual friends. No waiting. Just information you're legally entitled to see, organized so it finally makes sense.</p>
+    </div>
+
+    <h2>What Changed For Her</h2>
+    <div class="divider"></div>
+
+    <div class="results-box">
+      <div class="result-stat">
+        <span class="label">Time to get real answers</span>
+        <span class="value">Under 60 seconds</span>
+      </div>
+      <div class="result-stat">
+        <span class="label">Cost vs. hiring a private investigator</span>
+        <span class="value">$50 vs. $500+</span>
+      </div>
+      <div class="result-stat">
+        <span class="label">Sleepless nights, self-reported</span>
+        <span class="value">Down from nightly to none</span>
+      </div>
+      <div class="result-stat">
+        <span class="label">"I finally trust my own judgment again"</span>
+        <span class="value">Reported by 9 in 10 users*</span>
+      </div>
+    </div>
+
+    <p>She didn't need a confrontation. She didn't need a dramatic scene. She just needed to know — and once she did, the decision made itself. "I wasn't angry that I looked," she said. "I was angry it took me four months to find fifty bucks and one minute."</p>
+
+    <h2>What Others Are Saying</h2>
+    <div class="divider"></div>
+
+    <div class="testimonials">
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>"I found out my new neighbor had an address history that didn't match anything he told us. I'm not saying he's dangerous — I'm saying now I actually know who's living next door."</p>
+        <div class="name">— Karen, 51</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>"I was getting calls from a number I didn't recognize almost daily. Took me a minute to find out exactly who it was. I finally stopped feeling on edge every time my phone rang."</p>
+        <div class="name">— Michelle, 39</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>"Before I let anyone new watch my kids, I check. It takes less time than making dinner and it's given me so much peace of mind I can't put a price on it."</p>
+        <div class="name">— Angela, 46</div>
+      </div>
+    </div>
+
+    <div class="urgency-box">
+      <div class="countdown">⏳ Limited access at this rate</div>
+      <p>Public record searches at this price point are typically reserved for professional use. This access window is available for a limited time before pricing adjusts back to standard rates.</p>
+      <div class="cta-wrap">
+        <a href="#" class="cta-button">RUN A CONFIDENTIAL SEARCH NOW →</a>
+      </div>
+      <p class="cta-sub">🔒 100% confidential. No one is notified. Results in under 60 seconds.</p>
+    </div>
+
+    <p style="text-align:center; font-size:15px; color:#777;">You don't need proof of wrongdoing to want peace of mind. You just need the truth — and now, it's one search away.</p>
+
+  </div>
+
+  <div class="disclaimer">
+    <p><strong>Disclaimer:</strong> This page is an independent advertorial feature and is not a news publication. Individual results, experiences, and testimonials described are illustrative and may be composites reflective of typical user feedback; they are not guaranteed outcomes and results will vary. *Statistics referenced are for illustrative purposes and have not been independently verified. This service aggregates publicly available records and does not guarantee the accuracy, completeness, or timeliness of any information returned. This tool should not be used to make decisions regarding employment, tenant screening, credit, insurance, or any purpose covered under the Fair Credit Reporting Act (FCRA). Pricing, offers, and availability are subject to change without notice. Always use discretion and comply with applicable laws when researching information about another individual.</p>
+  </div>
+</div>
+
+</body>
+</html>
