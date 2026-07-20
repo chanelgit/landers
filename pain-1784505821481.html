@@ -1,0 +1,395 @@
+=<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Credit Check Quiz</title>
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(160deg, #101828 0%, #1c2b45 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 480px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    overflow: hidden;
+    min-height: 560px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    padding: 20px 24px 0 24px;
+    display: none;
+  }
+
+  .progress-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: #e7ebf1;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #2f7dfa, #1355c9);
+    border-radius: 20px;
+    transition: width 0.4s ease;
+  }
+
+  .progress-label {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #8a94a6;
+    text-align: right;
+  }
+
+  /* SCREENS */
+  .screen {
+    flex: 1;
+    display: none;
+    flex-direction: column;
+    padding: 32px 28px;
+    animation: fadeIn 0.45s ease;
+  }
+
+  .screen.active {
+    display: flex;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* START SCREEN */
+  #screen-start {
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    background: linear-gradient(180deg, #ffffff 0%, #f4f7fc 100%);
+  }
+
+  .badge {
+    background: #eaf1ff;
+    color: #1355c9;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  #screen-start h1 {
+    font-size: 26px;
+    color: #101828;
+    line-height: 1.35;
+    margin-bottom: 14px;
+  }
+
+  #screen-start p {
+    font-size: 15px;
+    color: #5b6472;
+    line-height: 1.5;
+    margin-bottom: 28px;
+  }
+
+  .start-btn {
+    background: linear-gradient(90deg, #2f7dfa, #1355c9);
+    color: #fff;
+    border: none;
+    padding: 17px 32px;
+    font-size: 17px;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 10px 25px rgba(19,85,201,0.35);
+    transition: transform 0.15s ease;
+  }
+
+  .start-btn:active {
+    transform: scale(0.97);
+  }
+
+  .reassure {
+    margin-top: 18px;
+    font-size: 12.5px;
+    color: #9aa3b2;
+  }
+
+  /* QUESTION SCREENS */
+  .q-headline {
+    font-size: 21px;
+    color: #101828;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 22px 0 24px 0;
+  }
+
+  .answers {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .answer-btn {
+    background: #f4f7fc;
+    border: 2px solid #e7ebf1;
+    border-radius: 14px;
+    padding: 18px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e293b;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .answer-btn:hover {
+    background: #eaf1ff;
+    border-color: #2f7dfa;
+  }
+
+  .answer-btn.selected {
+    background: #1355c9;
+    border-color: #1355c9;
+    color: #fff;
+  }
+
+  .answer-btn .arrow {
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    font-size: 18px;
+  }
+
+  .answer-btn:hover .arrow {
+    opacity: 1;
+  }
+
+  /* LOADING SCREEN */
+  #screen-loading {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .spinner {
+    width: 56px;
+    height: 56px;
+    border: 5px solid #e7ebf1;
+    border-top: 5px solid #1355c9;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+    margin-bottom: 26px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  #screen-loading h2 {
+    font-size: 19px;
+    color: #101828;
+    margin-bottom: 10px;
+  }
+
+  #screen-loading p {
+    font-size: 14px;
+    color: #8a94a6;
+    max-width: 300px;
+  }
+
+  .loading-bar-bg {
+    width: 100%;
+    max-width: 260px;
+    height: 6px;
+    background: #e7ebf1;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 22px;
+  }
+
+  .loading-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #2f7dfa, #1355c9);
+    border-radius: 20px;
+    animation: loadFill 2.4s ease forwards;
+  }
+
+  @keyframes loadFill {
+    to { width: 100%; }
+  }
+
+  .footer-note {
+    text-align: center;
+    font-size: 11px;
+    color: #b0b8c4;
+    padding: 14px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-label" id="progressLabel">Question 1 of 4</div>
+  </div>
+
+  <!-- START SCREEN -->
+  <div class="screen active" id="screen-start">
+    <div class="badge">30-Second Check</div>
+    <h1>Tired of the "Sorry, You Didn't Qualify" Feeling?</h1>
+    <p>Answer a few quick questions and we'll show you where your credit stands — and the fastest path to stop hearing "no."</p>
+    <button class="start-btn" onclick="startQuiz()">Start My Check →</button>
+    <div class="reassure">Free · Takes 30 seconds · No commitment</div>
+  </div>
+
+  <!-- QUESTION 1 -->
+  <div class="screen" id="screen-q1">
+    <div class="q-headline">What's been the hardest part of dealing with your credit lately?</div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(1)">Getting denied for an apartment or needing a cosigner <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(1)">Stuck with sky-high interest rates <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(1)">Collections calls that won't stop <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(1)">No idea what's even hurting my score <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 2 -->
+  <div class="screen" id="screen-q2">
+    <div class="q-headline">How does checking your credit score usually make you feel?</div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(2)">Anxious before I even look <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(2)">Embarrassed, honestly <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(2)">Confused by all the numbers <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(2)">Hopeless, like it'll never change <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 3 -->
+  <div class="screen" id="screen-q3">
+    <div class="q-headline">Have you tried fixing it before?</div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(3)">Paid a credit repair company — barely worked <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(3)">Got a secured card but wasn't sure how to use it <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(3)">Watched videos but never took action <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(3)">Just ignored it and hoped it'd fix itself <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <!-- QUESTION 4 -->
+  <div class="screen" id="screen-q4">
+    <div class="q-headline">What's blocked by your credit right now?</div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(4)">A place to rent <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(4)">A car I actually need <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(4)">A lower rate / less debt stress <span class="arrow">→</span></button>
+      <button class="answer-btn" onclick="selectAnswer(4)">Just peace of mind <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <!-- LOADING SCREEN -->
+  <div class="screen" id="screen-loading">
+    <div class="spinner"></div>
+    <h2>Finding your results…</h2>
+    <p>Matching your answers to the fastest credit-building path for your situation.</p>
+    <div class="loading-bar-bg">
+      <div class="loading-bar-fill"></div>
+    </div>
+  </div>
+
+  <div class="footer-note">Your responses are used only to personalize your results.</div>
+
+</div>
+
+<script>
+  // ======== CONFIG ========
+  const REDIRECT_URL = "https://example.com/offer-redirect"; // <-- placeholder offer/tracking URL
+  const TOTAL_QUESTIONS = 4;
+  // =========================
+
+  let currentQuestion = 0;
+
+  function startQuiz() {
+    document.getElementById('screen-start').classList.remove('active');
+    document.getElementById('progressWrap').style.display = 'block';
+    currentQuestion = 1;
+    showQuestion(currentQuestion);
+  }
+
+  function showQuestion(num) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const q = document.getElementById('screen-q' + num);
+    if (q) q.classList.add('active');
+    updateProgress(num);
+  }
+
+  function updateProgress(num) {
+    const pct = ((num - 1) / TOTAL_QUESTIONS) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = 'Question ' + num + ' of ' + TOTAL_QUESTIONS;
+  }
+
+  function selectAnswer(qNum, btnEl) {
+    // Visual feedback: mark clicked button as selected
+    const currentScreen = document.getElementById('screen-q' + qNum);
+    const buttons = currentScreen.querySelectorAll('.answer-btn');
+    const clicked = event.currentTarget;
+    buttons.forEach(b => b.classList.remove('selected'));
+    clicked.classList.add('selected');
+
+    // Auto-advance after short delay
+    setTimeout(() => {
+      if (qNum < TOTAL_QUESTIONS) {
+        currentQuestion = qNum + 1;
+        showQuestion(currentQuestion);
+      } else {
+        finishQuiz();
+      }
+    }, 350);
+  }
+
+  function finishQuiz() {
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progressLabel').textContent = 'Complete!';
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-loading').classList.add('active');
+
+    setTimeout(() => {
+      window.location.href = REDIRECT_URL;
+    }, 2600);
+  }
+</script>
+
+</body>
+</html>
