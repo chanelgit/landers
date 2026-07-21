@@ -1,0 +1,282 @@
+=<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Credit Score Quiz - See What's Really Holding You Back</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;background:#0f0f1a;color:#fff;min-height:100vh;overflow-x:hidden}
+.screen{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:20px;animation:fadeIn .4s ease}
+.screen.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* START SCREEN */
+.start-screen{text-align:center;background:linear-gradient(160deg,#0f0f1a 0%,#1a1a3e 50%,#0f0f1a 100%)}
+.eyebrow{font-size:13px;letter-spacing:2.5px;text-transform:uppercase;color:#7b8aff;margin-bottom:18px;font-weight:600}
+.main-headline{font-size:clamp(26px,5.5vw,42px);font-weight:800;line-height:1.2;max-width:620px;margin:0 auto 16px}
+.main-headline em{font-style:normal;color:#a78bfa;position:relative}
+.sub-headline{font-size:clamp(15px,3vw,18px);color:#b0b3c8;max-width:520px;margin:0 auto 32px;line-height:1.55}
+.start-btn{background:linear-gradient(135deg,#7c5cfc,#a78bfa);color:#fff;border:none;padding:18px 48px;font-size:19px;font-weight:700;border-radius:60px;cursor:pointer;transition:all .25s;box-shadow:0 0 30px rgba(124,92,252,.35);letter-spacing:.3px}
+.start-btn:hover{transform:scale(1.04);box-shadow:0 0 45px rgba(124,92,252,.55)}
+.start-btn:active{transform:scale(.97)}
+.disclaimer-start{font-size:11px;color:#666;margin-top:22px;max-width:400px;line-height:1.5}
+.quiz-count{display:inline-flex;align-items:center;gap:6px;background:rgba(124,92,252,.15);border:1px solid rgba(124,92,252,.25);border-radius:30px;padding:8px 18px;font-size:13px;color:#a78bfa;margin-bottom:24px}
+.quiz-count svg{width:16px;height:16px}
+.trust-row{display:flex;gap:24px;justify-content:center;margin-top:28px;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:6px;font-size:12px;color:#8888aa}
+.trust-item svg{width:14px;height:14px;color:#7c5cfc}
+
+/* PROGRESS BAR */
+.progress-container{width:100%;max-width:560px;margin-bottom:36px}
+.progress-label{display:flex;justify-content:space-between;font-size:12px;color:#7b8aff;margin-bottom:8px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.progress-track{width:100%;height:6px;background:rgba(255,255,255,.08);border-radius:10px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#7c5cfc,#a78bfa);border-radius:10px;transition:width .5s cubic-bezier(.4,0,.2,1);width:0%}
+
+/* QUESTION */
+.question-card{width:100%;max-width:560px;text-align:center}
+.question-number{font-size:12px;color:#7c5cfc;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.question-text{font-size:clamp(20px,4.5vw,28px);font-weight:700;line-height:1.35;margin-bottom:32px;color:#eee}
+.answers{display:flex;flex-direction:column;gap:14px;width:100%}
+.answer-btn{background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);border-radius:16px;padding:18px 24px;font-size:16px;color:#d4d4e8;cursor:pointer;transition:all .2s;text-align:left;display:flex;align-items:center;gap:14px;font-weight:500}
+.answer-btn:hover{border-color:#7c5cfc;background:rgba(124,92,252,.1);color:#fff;transform:translateX(4px)}
+.answer-btn.selected{border-color:#7c5cfc;background:rgba(124,92,252,.2);color:#fff;transform:scale(.97)}
+.answer-icon{width:40px;height:40px;border-radius:12px;background:rgba(124,92,252,.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+
+/* LOADING SCREEN */
+.loading-screen{text-align:center;background:linear-gradient(160deg,#0f0f1a 0%,#1a1a3e 50%,#0f0f1a 100%)}
+.loader-ring{width:80px;height:80px;border-radius:50%;border:4px solid rgba(124,92,252,.15);border-top-color:#7c5cfc;animation:spin 1s linear infinite;margin:0 auto 32px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:clamp(18px,4vw,24px);font-weight:700;margin-bottom:12px;color:#eee}
+.loading-sub{font-size:14px;color:#8888aa;max-width:380px;margin:0 auto}
+.loading-steps{margin-top:28px;text-align:left;max-width:340px;margin-left:auto;margin-right:auto}
+.loading-step{display:flex;align-items:center;gap:10px;font-size:14px;color:#666;padding:8px 0;transition:color .4s}
+.loading-step.done{color:#7c5cfc}
+.loading-step svg{width:18px;height:18px;opacity:.3;transition:opacity .4s}
+.loading-step.done svg{opacity:1}
+
+/* RESULT SCREEN (brief, before redirect) */
+.result-screen{text-align:center;background:linear-gradient(160deg,#0f0f1a 0%,#1a1a3e 50%,#0f0f1a 100%)}
+.result-badge{background:rgba(124,92,252,.15);border:1px solid rgba(124,92,252,.3);border-radius:30px;padding:8px 20px;font-size:13px;color:#a78bfa;display:inline-block;margin-bottom:18px;font-weight:600}
+.result-headline{font-size:clamp(22px,5vw,34px);font-weight:800;line-height:1.25;max-width:540px;margin:0 auto 16px}
+.result-sub{font-size:15px;color:#b0b3c8;max-width:480px;margin:0 auto 30px;line-height:1.6}
+.result-cta{background:linear-gradient(135deg,#7c5cfc,#a78bfa);color:#fff;border:none;padding:18px 48px;font-size:18px;font-weight:700;border-radius:60px;cursor:pointer;transition:all .25s;box-shadow:0 0 30px rgba(124,92,252,.35)}
+.result-cta:hover{transform:scale(1.04);box-shadow:0 0 45px rgba(124,92,252,.55)}
+.redirect-note{font-size:12px;color:#555;margin-top:16px}
+
+@media(max-width:480px){
+.answer-btn{padding:15px 16px;font-size:15px}
+.answer-icon{width:36px;height:36px;font-size:16px;border-radius:10px}
+}
+</style>
+</head>
+<body>
+
+<!-- SCREEN 0: START -->
+<div class="screen active" id="screen-start">
+<div class="start-screen">
+<div class="eyebrow">Free 30-Second Quiz</div>
+<h1 class="main-headline">A woman raised her credit score 83 points <em>without paying off a single debt</em> — could the same method work for you?</h1>
+<p class="sub-headline">Answer 3 quick questions to see if you qualify for the unusual credit-building strategy most people have never heard of.</p>
+<div class="quiz-count">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+Takes about 30 seconds
+</div>
+<button class="start-btn" onclick="startQuiz()">Find Out If You Qualify →</button>
+<div class="trust-row">
+<span class="trust-item">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+No credit pull required
+</span>
+<span class="trust-item">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+47,312 people have taken this quiz
+</span>
+</div>
+<p class="disclaimer-start">Your answers are confidential and used only to check eligibility. No login required.</p>
+</div>
+</div>
+
+<!-- SCREEN 1: QUESTION 1 -->
+<div class="screen" id="screen-q1">
+<div class="progress-container">
+<div class="progress-label"><span>Question 1 of 3</span><span>33%</span></div>
+<div class="progress-track"><div class="progress-fill" style="width:33%"></div></div>
+</div>
+<div class="question-card">
+<div class="question-number">Question 1</div>
+<h2 class="question-text">What's your current credit score range?</h2>
+<div class="answers">
+<button class="answer-btn" onclick="selectAnswer(this,1)">
+<span class="answer-icon">📉</span>
+Under 500 — I'm starting from scratch
+</button>
+<button class="answer-btn" onclick="selectAnswer(this,1)">
+<span class="answer-icon">😬</span>
+500–579 — It needs serious help
+</button>
+<button class="answer-btn" onclick="selectAnswer(this,1)">
+<span class="answer-icon">🤷</span>
+580–649 — Not great, not terrible
+</button>
+<button class="answer-btn" onclick="selectAnswer(this,1)">
+<span class="answer-icon">🤔</span>
+I honestly don't know my score
+</button>
+</div>
+</div>
+</div>
+
+<!-- SCREEN 2: QUESTION 2 -->
+<div class="screen" id="screen-q2">
+<div class="progress-container">
+<div class="progress-label"><span>Question 2 of 3</span><span>66%</span></div>
+<div class="progress-track"><div class="progress-fill" style="width:66%"></div></div>
+</div>
+<div class="question-card">
+<div class="question-number">Question 2</div>
+<h2 class="question-text">What's the #1 reason you want a better credit score right now?</h2>
+<div class="answers">
+<button class="answer-btn" onclick="selectAnswer(this,2)">
+<span class="answer-icon">🏠</span>
+I want to get approved for an apartment or home
+</button>
+<button class="answer-btn" onclick="selectAnswer(this,2)">
+<span class="answer-icon">🚗</span>
+I'm tired of insane interest rates on my car
+</button>
+<button class="answer-btn" onclick="selectAnswer(this,2)">
+<span class="answer-icon">💳</span>
+I want a real credit card, not a prepaid one
+</button>
+<button class="answer-btn" onclick="selectAnswer(this,2)">
+<span class="answer-icon">😤</span>
+I just want to stop feeling stuck and embarrassed
+</button>
+</div>
+</div>
+</div>
+
+<!-- SCREEN 3: QUESTION 3 -->
+<div class="screen" id="screen-q3">
+<div class="progress-container">
+<div class="progress-label"><span>Question 3 of 3</span><span>100%</span></div>
+<div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>
+</div>
+<div class="question-card">
+<div class="question-number">Question 3</div>
+<h2 class="question-text">Have you ever tried a credit repair company or app that didn't actually work?</h2>
+<div class="answers">
+<button class="answer-btn" onclick="selectAnswer(this,3)">
+<span class="answer-icon">💸</span>
+Yes — I paid money and nothing changed
+</button>
+<button class="answer-btn" onclick="selectAnswer(this,3)">
+<span class="answer-icon">📱</span>
+I've used free apps but just stare at the number
+</button>
+<button class="answer-btn" onclick="selectAnswer(this,3)">
+<span class="answer-icon">🔄</span>
+I tried disputing items myself and got nowhere
+</button>
+<button class="answer-btn" onclick="selectAnswer(this,3)">
+<span class="answer-icon">🆕</span>
+No — this is my first time looking into it
+</button>
+</div>
+</div>
+</div>
+
+<!-- SCREEN 4: LOADING -->
+<div class="screen" id="screen-loading">
+<div class="loading-screen">
+<div class="loader-ring"></div>
+<h2 class="loading-text">Analyzing your answers…</h2>
+<p class="loading-sub">We're checking if the "backdoor" credit method matches your situation.</p>
+<div class="loading-steps">
+<div class="loading-step" id="lstep1">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 4 12 14.01 9 11.01"/></svg>
+Reviewing your credit range…
+</div>
+<div class="loading-step" id="lstep2">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 4 12 14.01 9 11.01"/></svg>
+Matching goal to method…
+</div>
+<div class="loading-step" id="lstep3">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 4 12 14.01 9 11.01"/></svg>
+Checking eligibility…
+</div>
+</div>
+</div>
+</div>
+
+<!-- SCREEN 5: RESULT (auto-redirects) -->
+<div class="screen" id="screen-result">
+<div class="result-screen">
+<div class="result-badge">✅ Good News — You Likely Qualify</div>
+<h2 class="result-headline">Based on your answers, the "silent reporting" method could work for your situation</h2>
+<p class="result-sub">This little-known approach builds positive payment history on your credit report — even if you have collections, late payments, or a thin file. No credit pull. No monthly fees to a repair company. Thousands of people in your exact situation have used it to see real movement in as little as 30 days.</p>
+<button class="result-cta" onclick="goToOffer()">See How It Works →</button>
+<p class="redirect-note">Redirecting you in a moment…</p>
+</div>
+</div>
+
+<script>
+// CONFIGURATION
+var OFFER_URL = 'https://your-tracking-link.com/credit-builder-offer'; // ← Replace with your actual offer/tracking URL
+
+function startQuiz() {
+showScreen('screen-q1');
+}
+
+function selectAnswer(btn, qNum) {
+// Visual feedback
+var siblings = btn.parentElement.querySelectorAll('.answer-btn');
+siblings.forEach(function(b){ b.style.pointerEvents = 'none'; });
+btn.classList.add('selected');
+
+// Auto-advance after short delay
+setTimeout(function() {
+if (qNum === 1) {
+showScreen('screen-q2');
+} else if (qNum === 2) {
+showScreen('screen-q3');
+} else if (qNum === 3) {
+showScreen('screen-loading');
+runLoader();
+}
+}, 500);
+}
+
+function showScreen(id) {
+var screens = document.querySelectorAll('.screen');
+screens.forEach(function(s){ s.classList.remove('active'); });
+document.getElementById(id).classList.add('active');
+window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function runLoader() {
+var steps = ['lstep1', 'lstep2', 'lstep3'];
+steps.forEach(function(stepId, i) {
+setTimeout(function() {
+document.getElementById(stepId).classList.add('done');
+}, (i + 1) * 1200);
+});
+
+// After all steps complete, show result briefly then redirect
+setTimeout(function() {
+showScreen('screen-result');
+// Auto-redirect after 4 seconds on result screen
+setTimeout(function() {
+window.location.href = OFFER_URL;
+}, 4000);
+}, steps.length * 1200 + 800);
+}
+
+function goToOffer() {
+window.location.href = OFFER_URL;
+}
+</script>
+
+</body>
+</html>
