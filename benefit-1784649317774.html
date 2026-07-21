@@ -1,0 +1,261 @@
+=<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Credit Score Qualifier</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a1a;color:#fff;min-height:100vh;overflow-x:hidden}
+.container{max-width:520px;margin:0 auto;padding:20px 16px;min-height:100vh;display:flex;flex-direction:column}
+.progress-wrap{width:100%;height:6px;background:rgba(255,255,255,.1);border-radius:99px;margin:16px 0 32px;overflow:hidden}
+.progress-bar{height:100%;width:0%;background:linear-gradient(90deg,#4ade80,#22d3ee);border-radius:99px;transition:width .5s ease}
+.step-label{font-size:13px;color:rgba(255,255,255,.45);text-align:center;margin-bottom:4px;letter-spacing:.5px}
+
+/* INTRO SCREEN */
+.intro{text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding-bottom:60px}
+.intro-badge{display:inline-block;background:rgba(74,222,128,.12);color:#4ade80;font-size:12px;font-weight:700;padding:6px 16px;border-radius:99px;margin-bottom:24px;letter-spacing:.8px;text-transform:uppercase}
+.intro h1{font-size:26px;line-height:1.3;font-weight:800;margin-bottom:14px;background:linear-gradient(135deg,#fff 60%,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.intro p{font-size:15px;color:rgba(255,255,255,.6);line-height:1.6;max-width:400px;margin-bottom:36px}
+.intro .highlight{color:#4ade80;font-weight:600;-webkit-text-fill-color:#4ade80}
+.btn-start{background:linear-gradient(135deg,#4ade80,#16a34a);color:#fff;border:none;padding:18px 48px;font-size:17px;font-weight:700;border-radius:14px;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 24px rgba(74,222,128,.3)}
+.btn-start:hover{transform:translateY(-2px);box-shadow:0 6px 32px rgba(74,222,128,.45)}
+.btn-start:active{transform:scale(.97)}
+
+/* QUESTION SCREENS */
+.question-screen{display:none;flex:1;flex-direction:column;animation:fadeUp .4s ease}
+.question-screen.active{display:flex}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.question-screen h2{font-size:22px;font-weight:700;line-height:1.35;text-align:center;margin-bottom:8px}
+.question-sub{font-size:14px;color:rgba(255,255,255,.45);text-align:center;margin-bottom:28px}
+.answers{display:flex;flex-direction:column;gap:12px;flex:1;justify-content:flex-start;padding-top:4px}
+.answer-btn{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);border-radius:14px;padding:18px 20px;font-size:16px;font-weight:600;color:#fff;cursor:pointer;transition:all .25s;text-align:left;display:flex;align-items:center;gap:14px}
+.answer-btn:hover{background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.4)}
+.answer-btn:active,.answer-btn.selected{background:rgba(74,222,128,.15);border-color:#4ade80;transform:scale(.98)}
+.answer-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.answer-text span{display:block;font-size:12px;color:rgba(255,255,255,.4);font-weight:400;margin-top:2px}
+
+/* LOADING SCREEN */
+.loading-screen{display:none;flex:1;flex-direction:column;justify-content:center;align-items:center;text-align:center;animation:fadeUp .4s ease}
+.loading-screen.active{display:flex}
+.spinner-ring{width:64px;height:64px;border-radius:50%;border:4px solid rgba(255,255,255,.08);border-top-color:#4ade80;animation:spin 1s linear infinite;margin-bottom:28px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-screen h2{font-size:20px;font-weight:700;margin-bottom:8px}
+.loading-screen p{font-size:14px;color:rgba(255,255,255,.5);max-width:300px}
+.loading-steps{margin-top:28px;text-align:left;width:100%;max-width:300px}
+.loading-step{display:flex;align-items:center;gap:12px;padding:10px 0;font-size:14px;color:rgba(255,255,255,.35);transition:color .5s}
+.loading-step.done{color:#4ade80}
+.loading-step .check{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .4s;flex-shrink:0}
+.loading-step.done .check{border-color:#4ade80;background:rgba(74,222,128,.15)}
+
+/* TRUST BAR */
+.trust-bar{display:flex;justify-content:center;gap:24px;padding:20px 0 12px;margin-top:auto}
+.trust-item{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,.3)}
+.trust-dot{width:6px;height:6px;border-radius:50%;background:rgba(74,222,128,.5)}
+
+/* RESULT PREVIEW (brief flash before redirect) */
+.result-screen{display:none;flex:1;flex-direction:column;justify-content:center;align-items:center;text-align:center;animation:fadeUp .4s ease}
+.result-screen.active{display:flex}
+.result-badge{background:rgba(74,222,128,.15);color:#4ade80;font-size:13px;font-weight:700;padding:8px 20px;border-radius:99px;margin-bottom:20px}
+.result-screen h2{font-size:24px;font-weight:800;margin-bottom:12px}
+.result-screen p{font-size:15px;color:rgba(255,255,255,.55);line-height:1.6;max-width:380px;margin-bottom:28px}
+.btn-result{background:linear-gradient(135deg,#4ade80,#16a34a);color:#fff;border:none;padding:18px 40px;font-size:17px;font-weight:700;border-radius:14px;cursor:pointer;box-shadow:0 4px 24px rgba(74,222,128,.3);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 4px 24px rgba(74,222,128,.3)}50%{box-shadow:0 4px 36px rgba(74,222,128,.55)}}
+</style>
+</head>
+<body>
+
+<div class="container" id="app">
+
+  <!-- INTRO -->
+  <div class="intro" id="intro">
+    <div class="intro-badge">Free 60-Second Quiz</div>
+    <h1>See What Your Credit Score Could Look Like 45 Days From Now</h1>
+    <p>Thousands of people are quietly adding <span class="highlight">40–80+ points</span> to their credit scores — without paying a credit repair company and without disputing a single item. <br><br>Answer 3 quick questions to see if you qualify for the same method.</p>
+    <button class="btn-start" id="startBtn">See If I Qualify →</button>
+  </div>
+
+  <!-- PROGRESS -->
+  <div id="quizSection" style="display:none;flex:1;flex-direction:column">
+    <div class="step-label" id="stepLabel">Question 1 of 3</div>
+    <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+    <!-- Q1 -->
+    <div class="question-screen active" id="q1">
+      <h2>What's your biggest credit goal in the next 6 months?</h2>
+      <div class="question-sub">Pick the one that matters most right now</div>
+      <div class="answers">
+        <button class="answer-btn" onclick="answer(1)">
+          <div class="answer-icon">🏠</div>
+          <div>Get approved for an apartment or home<span>Without needing a cosigner</span></div>
+        </button>
+        <button class="answer-btn" onclick="answer(1)">
+          <div class="answer-icon">🚗</div>
+          <div>Buy a car with a lower interest rate<span>Stop overpaying every month</span></div>
+        </button>
+        <button class="answer-btn" onclick="answer(1)">
+          <div class="answer-icon">💳</div>
+          <div>Finally get approved for a real credit card<span>No more secured cards or denials</span></div>
+        </button>
+        <button class="answer-btn" onclick="answer(1)">
+          <div class="answer-icon">✨</div>
+          <div>Just want a fresh start and peace of mind<span>Stop stressing about my score</span></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question-screen" id="q2">
+      <h2>Have you ever tried to improve your credit before?</h2>
+      <div class="question-sub">No wrong answers — just helps us find your best path</div>
+      <div class="answers">
+        <button class="answer-btn" onclick="answer(2)">
+          <div class="answer-icon">😔</div>
+          <div>Yes — paid a credit repair company<span>It didn't really work</span></div>
+        </button>
+        <button class="answer-btn" onclick="answer(2)">
+          <div class="answer-icon">📱</div>
+          <div>Yes — I check my score on free apps<span>But nothing seems to change</span></div>
+        </button>
+        <button class="answer-btn" onclick="answer(2)">
+          <div class="answer-icon">🤷</div>
+          <div>I tried some things I saw online<span>Templates, disputes, tips from social media</span></div>
+        </button>
+        <button class="answer-btn" onclick="answer(2)">
+          <div class="answer-icon">🆕</div>
+          <div>No — I don't know where to start<span>This would be my first real step</span></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question-screen" id="q3">
+      <h2>Where would you estimate your credit score is right now?</h2>
+      <div class="question-sub">A rough guess is totally fine</div>
+      <div class="answers">
+        <button class="answer-btn" onclick="answer(3)">
+          <div class="answer-icon">🔴</div>
+          <div>Below 500<span>Pretty rough — I know it needs work</span></div>
+        </button>
+        <button class="answer-btn" onclick="answer(3)">
+          <div class="answer-icon">🟠</div>
+          <div>500 – 579<span>Getting denied for most things</span></div>
+        </button>
+        <button class="answer-btn" onclick="answer(3)">
+          <div class="answer-icon">🟡</div>
+          <div>580 – 649<span>Some approvals but terrible rates</span></div>
+        </button>
+        <button class="answer-btn" onclick="answer(3)">
+          <div class="answer-icon">🟢</div>
+          <div>650+ but want it higher<span>I want the best rates possible</span></div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="spinner-ring"></div>
+    <h2>Finding Your Results…</h2>
+    <p>Matching you with the best credit-building path based on your answers</p>
+    <div class="loading-steps">
+      <div class="loading-step" id="ls1"><div class="check">✓</div> Analyzing your credit profile…</div>
+      <div class="loading-step" id="ls2"><div class="check">✓</div> Calculating potential score increase…</div>
+      <div class="loading-step" id="ls3"><div class="check">✓</div> Checking qualification status…</div>
+    </div>
+  </div>
+
+  <!-- RESULT (brief — auto-redirects) -->
+  <div class="result-screen" id="resultScreen">
+    <div class="result-badge">✅ You Qualify</div>
+    <h2>You Could See 40–80+ Points Added in as Little as 45 Days</h2>
+    <p>Based on your answers, you're a strong match for a credit-building method that reports positive history to all 3 bureaus — automatically. No disputes. No credit repair fees. Just real points showing up on your report.</p>
+    <button class="btn-result" id="ctaBtn">Show Me How It Works →</button>
+  </div>
+
+  <!-- TRUST -->
+  <div class="trust-bar" id="trustBar">
+    <div class="trust-item"><div class="trust-dot"></div>256-bit Encrypted</div>
+    <div class="trust-item"><div class="trust-dot"></div>No Credit Pull</div>
+    <div class="trust-item"><div class="trust-dot"></div>100% Free Quiz</div>
+  </div>
+
+</div>
+
+<script>
+var totalQ = 3;
+var currentQ = 0;
+var offerURL = "https://example.com/credit-builder-offer";
+
+document.getElementById("startBtn").addEventListener("click", function(){
+  document.getElementById("intro").style.display = "none";
+  var qs = document.getElementById("quizSection");
+  qs.style.display = "flex";
+  currentQ = 1;
+  updateProgress();
+});
+
+function answer(qNum){
+  var btns = document.getElementById("q"+qNum).querySelectorAll(".answer-btn");
+  var clicked = event.currentTarget;
+  clicked.classList.add("selected");
+  
+  setTimeout(function(){
+    document.getElementById("q"+qNum).classList.remove("active");
+    document.getElementById("q"+qNum).style.display = "none";
+    
+    if(qNum < totalQ){
+      currentQ = qNum + 1;
+      var next = document.getElementById("q"+currentQ);
+      next.style.display = "flex";
+      next.classList.add("active");
+      updateProgress();
+    } else {
+      showLoading();
+    }
+  }, 350);
+}
+
+function updateProgress(){
+  var pct = (currentQ / totalQ) * 100;
+  document.getElementById("progressBar").style.width = pct + "%";
+  document.getElementById("stepLabel").textContent = "Question " + currentQ + " of " + totalQ;
+}
+
+function showLoading(){
+  document.getElementById("quizSection").style.display = "none";
+  document.getElementById("trustBar").style.display = "none";
+  var ls = document.getElementById("loadingScreen");
+  ls.style.display = "flex";
+  ls.classList.add("active");
+  
+  setTimeout(function(){ document.getElementById("ls1").classList.add("done"); }, 800);
+  setTimeout(function(){ document.getElementById("ls2").classList.add("done"); }, 2000);
+  setTimeout(function(){ document.getElementById("ls3").classList.add("done"); }, 3200);
+  
+  setTimeout(function(){
+    ls.style.display = "none";
+    ls.classList.remove("active");
+    showResult();
+  }, 4000);
+}
+
+function showResult(){
+  var rs = document.getElementById("resultScreen");
+  rs.style.display = "flex";
+  rs.classList.add("active");
+  document.getElementById("trustBar").style.display = "flex";
+  
+  document.getElementById("ctaBtn").addEventListener("click", function(){
+    window.location.href = offerURL;
+  });
+  
+  // Auto-redirect after 4 seconds if they don't click
+  setTimeout(function(){
+    window.location.href = offerURL;
+  }, 4000);
+}
+</script>
+
+</body>
+</html>
