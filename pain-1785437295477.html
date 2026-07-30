@@ -1,0 +1,404 @@
+=<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>She Ignored the Feeling in Her Gut. Here's What It Cost Her.</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #f4f1ec;
+    color: #2b2b2b;
+    line-height: 1.7;
+  }
+  .wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 0 30px rgba(0,0,0,0.08);
+  }
+  .top-bar {
+    background: #1a1a2e;
+    color: #ccc;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    text-align: center;
+    padding: 8px 10px;
+    letter-spacing: 0.5px;
+  }
+  .content {
+    padding: 35px 30px 20px;
+  }
+  .category {
+    font-family: Arial, sans-serif;
+    color: #b23b3b;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-size: 32px;
+    color: #16161f;
+    line-height: 1.3;
+    margin-bottom: 14px;
+  }
+  .subheadline {
+    font-size: 19px;
+    color: #555;
+    font-style: italic;
+    font-weight: normal;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  .byline {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #777;
+    border-top: 1px solid #e2ddd3;
+    border-bottom: 1px solid #e2ddd3;
+    padding: 12px 0;
+    margin-bottom: 25px;
+  }
+  .avatar-circle {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #b23b3b, #6b1f1f);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Georgia, serif;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  .byline .name {
+    font-weight: bold;
+    color: #333;
+  }
+  p {
+    font-size: 17px;
+    margin-bottom: 18px;
+    color: #2b2b2b;
+  }
+  .hook {
+    font-size: 19px;
+    color: #16161f;
+  }
+  .drop-cap::first-letter {
+    font-size: 46px;
+    font-weight: bold;
+    float: left;
+    line-height: 0.8;
+    padding-right: 8px;
+    padding-top: 4px;
+    color: #b23b3b;
+  }
+  h2 {
+    font-size: 24px;
+    color: #16161f;
+    margin: 35px 0 15px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid #b23b3b;
+    display: inline-block;
+  }
+  .story-block {
+    background: #f9f6f0;
+    border-left: 4px solid #b23b3b;
+    padding: 18px 20px;
+    margin: 20px 0;
+    font-style: italic;
+    color: #444;
+  }
+  .pullquote {
+    font-size: 22px;
+    font-style: italic;
+    color: #6b1f1f;
+    text-align: center;
+    padding: 20px 10px;
+    margin: 25px 0;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+  .what-is-it {
+    background: #eef1ea;
+    border-radius: 8px;
+    padding: 25px;
+    margin: 25px 0;
+  }
+  .what-is-it h2 {
+    border-bottom: 3px solid #4a6b4a;
+  }
+  .feature-list {
+    list-style: none;
+    margin: 15px 0;
+  }
+  .feature-list li {
+    font-size: 16px;
+    padding: 10px 0 10px 32px;
+    position: relative;
+    border-bottom: 1px solid #d9ded2;
+  }
+  .feature-list li:last-child { border-bottom: none; }
+  .feature-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    color: #4a6b4a;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .results-section {
+    background: #fff;
+    margin: 25px 0;
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin: 20px 0;
+  }
+  .stat-box {
+    background: #16161f;
+    color: #fff;
+    text-align: center;
+    padding: 20px 10px;
+    border-radius: 8px;
+  }
+  .stat-number {
+    font-family: Arial, sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    color: #e8b04b;
+    display: block;
+  }
+  .stat-label {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #ccc;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .testimonials {
+    margin: 30px 0;
+  }
+  .testimonial {
+    background: #f9f6f0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    position: relative;
+  }
+  .stars {
+    color: #e8b04b;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  .testimonial p {
+    font-size: 16px;
+    font-style: italic;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  .testimonial-author {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    color: #b23b3b;
+  }
+  .urgency-box {
+    background: linear-gradient(135deg, #6b1f1f, #b23b3b);
+    color: #fff;
+    text-align: center;
+    padding: 30px 25px;
+    border-radius: 10px;
+    margin: 35px 0 20px;
+  }
+  .urgency-box p {
+    color: #fff;
+    font-size: 17px;
+    margin-bottom: 18px;
+  }
+  .urgency-box .price-line {
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    color: #ffe0b3;
+    margin-bottom: 18px;
+  }
+  .cta-button {
+    display: inline-block;
+    background: #e8b04b;
+    color: #16161f;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 19px;
+    text-decoration: none;
+    padding: 18px 40px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: transform 0.15s ease;
+  }
+  .cta-button:hover { transform: scale(1.04); }
+  .cta-sub {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #ffe0b3;
+    margin-top: 12px;
+  }
+  .timer {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #ffe0b3;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  .disclaimer {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #999;
+    padding: 25px 30px 35px;
+    line-height: 1.6;
+    border-top: 1px solid #e2ddd3;
+  }
+  @media (max-width: 500px) {
+    h1 { font-size: 25px; }
+    .subheadline { font-size: 17px; }
+    .content { padding: 25px 20px 15px; }
+    .stat-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <div class="top-bar">PERSONAL ESSAY &nbsp;•&nbsp; RELATIONSHIPS &amp; SAFETY</div>
+
+  <div class="content">
+    <div class="category">Real Stories</div>
+    <h1>She Ignored the Feeling in Her Gut. Here's What It Cost Her.</h1>
+    <p class="subheadline">Most of us have felt it — that quiet, nagging doubt about someone new in our lives. This is the story of what happens when you finally listen to it.</p>
+
+    <div class="byline">
+      <div class="avatar-circle">RM</div>
+      <div>
+        <div class="name">Rachel Morgan</div>
+        <div>Contributor · Updated this week</div>
+      </div>
+    </div>
+
+    <p class="hook drop-cap">You know the feeling. It's 11:47 p.m. and you're staring at your phone, re-reading his texts for the third time, trying to figure out why something feels... off. Maybe it's the way he changes the subject when you ask about his job. Maybe it's the unfamiliar number that called twice and hung up. Maybe it's nothing. But maybe it's not.</p>
+
+    <p>If you've felt that quiet unease — about a new match, a new roommate, the person your teenager's been texting, or even the "handyman" who's coming to your house tomorrow — you're not paranoid. You're paying attention. And according to the people who wrote in after reading an earlier version of this story, that instinct is usually right more often than we want to admit.</p>
+
+    <h2>The Story: Denise Thought She Was Being "Too Careful"</h2>
+
+    <div class="story-block">
+      "I've always been the cautious one in my friend group," Denise, 44, told us. "But three months into talking to someone I met online, I still didn't know his last name for sure. Every time I asked a real question, he'd deflect with a joke. I told myself I was overthinking it. I told myself I'd feel silly if I 'checked up' on him."
+    </div>
+
+    <p>Denise isn't alone. After her divorce, she'd re-entered a dating pool that looked nothing like the one she remembered from her twenties — one where a profile photo and a charming opening line were all it took to seem trustworthy. She'd already been burned once, by a man who turned out to be married. She wasn't about to let it happen again. But she also didn't know what her other option even was.</p>
+
+    <p>"Googling his name got me nothing useful — just a LinkedIn page that could've belonged to anyone," she said. "I tried one of those free background check sites, and it wanted my credit card just to tell me it 'found results,' and then wanted another $40 to actually show them to me. I felt stuck. Like the only choices were to trust blindly or hire a private investigator."</p>
+
+    <p>Meanwhile, the small stuff kept piling up. A story that didn't quite match. A photo that looked a little too professionally shot. A last name he "forgot" to give her twice. She wasn't sleeping well. She was running scenarios in her head during the day at work. It wasn't just a dating problem anymore — it was starting to feel like a peace-of-mind problem.</p>
+
+    <h2>The Turning Point</h2>
+
+    <p>Everything shifted the week a friend sent Denise a screenshot — not of a dating profile, but of a full public records report. Her friend had searched her own name "just to see what was out there," half as a joke. What came back wasn't a joke at all: an old address she'd forgotten about, a name variation she'd used a decade ago, even a court record from a minor incident she'd assumed was long buried in some filing cabinet.</p>
+
+    <div class="pullquote">"If this is what shows up for a completely ordinary person... what would show up for someone who's actually hiding something?"</div>
+
+    <p>That question stuck with Denise. She realized she didn't need to "snoop" or feel guilty about wanting the truth. She didn't need a private investigator or a lawyer. She just needed the same kind of public information her friend had stumbled onto — organized, searchable, and available to her in minutes instead of weeks.</p>
+
+    <div class="what-is-it">
+      <h2>So What Actually Is This?</h2>
+      <p>It's a simple idea, once you understand it: most of what you'd want to know about someone is already sitting in public records — you just don't have an easy way to find it yourself. Court filings, address histories, possible criminal records, social media accounts tied to a name, even old aliases — scattered across dozens of government and public databases that were never built for an ordinary person to search.</p>
+      <p>This approach pulls that scattered information together into one report, using just a name (or a phone number, or an email). No courthouse visits. No hiring anyone. No awkward conversation where you have to explain why you're asking.</p>
+      <ul class="feature-list">
+        <li>Search using just a first and last name, phone number, or email address</li>
+        <li>Reports typically compile in under a couple of minutes</li>
+        <li>Checks for possible criminal or court records tied to public filings</li>
+        <li>Surfaces known addresses, so you can confirm someone is who they say they are</li>
+        <li>Finds linked social media profiles — useful for spotting fake or duplicate identities</li>
+        <li>100% based on public records — nothing illegal, nothing invasive</li>
+        <li>Private — the person you search never finds out or gets notified</li>
+      </ul>
+    </div>
+
+    <h2>What Changed for Denise</h2>
+
+    <p>Denise ran a search using the man's full name and the city he said he lived in. The report took less than two minutes. What it showed her wasn't dramatic — no crime ring, no secret family — but it was enough. Two different last names tied to the same face. An address in a different state than the one he'd claimed. A public record he'd conveniently never mentioned.</p>
+
+    <p>"I didn't even have to confront him," she said. "I just quietly stopped responding. And honestly, the relief I felt was bigger than the disappointment. I finally understood why my gut had been screaming at me for weeks."</p>
+
+    <div class="results-section">
+      <h2>What People Are Finding</h2>
+      <div class="stat-grid">
+        <div class="stat-box">
+          <span class="stat-number">2 min</span>
+          <span class="stat-label">Average Report Time</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">1 in 3</span>
+          <span class="stat-label">Reports Reveal a Mismatch*</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">Private & Confidential</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">$50</span>
+          <span class="stat-label">One-Time Full Report</span>
+        </div>
+      </div>
+      <p style="font-size:12px; color:#888;">*Based on self-reported user feedback comparing search results to information previously provided by the searched individual.</p>
+    </div>
+
+    <h2>They Weren't Looking for Drama. Just Answers.</h2>
+
+    <div class="testimonials">
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>"I searched the guy I'd been texting for a month before agreeing to meet in person. Turns out 'divorced, no kids' was actually 'married, three kids.' I never would've known otherwise. I felt sick, but grateful."</p>
+        <div class="testimonial-author">— Melissa, 34</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>"My daughter is 16 and started talking to someone online she 'met through a friend.' I wasn't trying to be the paranoid mom, I just needed to know he was actually 17 like he said. He was 24. I'm still shaking thinking about it."</p>
+        <div class="testimonial-author">— Karen, 47</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>"I run this before I let anyone move into my rental now. Took me two minutes and saved me from a very bad situation with an applicant who lied about basically everything on his form."</p>
+        <div class="testimonial-author">— Anthony, 39</div>
+      </div>
+    </div>
+
+    <div class="urgency-box">
+      <div class="timer">⏱ Most people wish they'd done this before the situation, not after</div>
+      <p><strong>If something feels off, there's usually a reason.</strong><br>You don't need to confront anyone. You don't need to feel crazy for wondering. You just need two minutes and a name.</p>
+      <div class="price-line">Full report access starting around $50 — often less than a single bad date, or a single bad decision, costs you.</div>
+      <a href="#" class="cta-button">Check Someone's Background Now →</a>
+      <div class="cta-sub">🔒 100% Confidential — They Will Never Be Notified</div>
+    </div>
+
+    <p style="text-align:center; font-size:15px; color:#777;">Denise, Melissa, Karen, and Anthony aren't investigators, and they're not paranoid. They're people who trusted their gut — and then found a way to actually know for sure.</p>
+
+  </div>
+
+  <div class="disclaimer">
+    <p><strong>Disclaimer:</strong> This page is an advertorial and contains a paid promotional message. Names and identifying details of individuals featured have been changed to protect privacy; images and stories are illustrative composites based on user-reported experiences and are not verified individual case studies unless otherwise noted. Results, including report contents and turnaround time, vary based on the availability of public records and the information searched. This service compiles publicly available records and does not guarantee the accuracy, completeness, or current status of any information returned. It should not be used to make decisions about consumer credit, employment, tenant screening, insurance, or any purpose covered by the Fair Credit Reporting Act (FCRA). Pricing may vary and may include recurring membership charges after an initial trial or one-time report fee — review full terms before purchase. This is not a government service and is not affiliated with any law enforcement agency.</p>
+  </div>
+
+</div>
+
+</body>
+</html>
