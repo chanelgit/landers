@@ -1,0 +1,341 @@
+=<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>60 Seconds to Know the Truth — What I Found Changed Everything</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #f7f5f2;
+    color: #2b2b2b;
+    line-height: 1.7;
+  }
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 0 30px rgba(0,0,0,0.06);
+  }
+  header {
+    padding: 40px 30px 20px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+  }
+  .kicker {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #b23b3b;
+    font-weight: bold;
+    margin-bottom: 14px;
+  }
+  h1 {
+    font-size: 32px;
+    line-height: 1.3;
+    color: #1a1a1a;
+    margin-bottom: 14px;
+  }
+  .subhead {
+    font-size: 19px;
+    color: #555;
+    font-style: italic;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+  .byline {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #888;
+    margin-top: 20px;
+    padding-top: 15px;
+  }
+  .byline strong { color: #444; }
+  article {
+    padding: 10px 30px 40px;
+    font-size: 18px;
+    color: #333;
+  }
+  article p { margin-bottom: 20px; }
+  .drop-cap::first-letter {
+    font-size: 52px;
+    font-weight: bold;
+    float: left;
+    line-height: 0.85;
+    margin-right: 8px;
+    color: #b23b3b;
+    font-family: Georgia, serif;
+  }
+  .pull-quote {
+    font-size: 22px;
+    font-style: italic;
+    color: #b23b3b;
+    border-left: 4px solid #b23b3b;
+    padding: 10px 20px;
+    margin: 30px 0;
+    background: #fdf7f6;
+  }
+  h2.section-title {
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    color: #1a1a1a;
+    margin: 40px 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #b23b3b;
+    display: inline-block;
+  }
+  .what-is-it {
+    background: #fbf9f6;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 28px;
+    margin: 20px 0 30px;
+  }
+  .what-is-it ul {
+    margin: 15px 0 15px 20px;
+  }
+  .what-is-it li { margin-bottom: 10px; }
+  .results-box {
+    background: #fff;
+    border: 2px solid #b23b3b22;
+    border-radius: 10px;
+    padding: 10px 28px;
+    margin: 20px 0 30px;
+  }
+  .result-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px 0;
+    border-bottom: 1px solid #f0e9e9;
+  }
+  .result-item:last-child { border-bottom: none; }
+  .checkmark {
+    background: #2e8b57;
+    color: #fff;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    margin-top: 3px;
+  }
+  .result-text strong { color: #1a1a1a; }
+  .testimonials {
+    padding: 10px 30px 10px;
+  }
+  .testimonial-card {
+    background: #fbf9f6;
+    border-radius: 10px;
+    padding: 22px 24px;
+    margin-bottom: 18px;
+    font-size: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  }
+  .stars {
+    color: #e0a800;
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+  .test-name {
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    color: #b23b3b;
+    margin-top: 10px;
+  }
+  .cta-block {
+    text-align: center;
+    padding: 35px 30px 45px;
+    background: linear-gradient(180deg, #fff 0%, #fdf3f2 100%);
+  }
+  .urgency {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #b23b3b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+  .cta-headline {
+    font-size: 24px;
+    color: #1a1a1a;
+    margin-bottom: 20px;
+    font-family: Arial, sans-serif;
+  }
+  .cta-button {
+    display: inline-block;
+    background: #2e8b57;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 18px 46px;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 6px 0 #1f6b41;
+    transition: transform 0.15s ease;
+    animation: pulse 1.8s infinite;
+  }
+  .cta-button:hover { transform: translateY(2px); }
+  @keyframes pulse {
+    0% { box-shadow: 0 6px 0 #1f6b41, 0 0 0 0 rgba(46,139,87,0.4); }
+    70% { box-shadow: 0 6px 0 #1f6b41, 0 0 0 12px rgba(46,139,87,0); }
+    100% { box-shadow: 0 6px 0 #1f6b41, 0 0 0 0 rgba(46,139,87,0); }
+  }
+  .sub-cta {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #888;
+    margin-top: 14px;
+  }
+  .price-tag {
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    color: #2e8b57;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  footer.disclaimer {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #999;
+    padding: 25px 30px 40px;
+    border-top: 1px solid #eee;
+    text-align: center;
+    line-height: 1.6;
+  }
+  @media (max-width: 500px) {
+    h1 { font-size: 26px; }
+    .subhead { font-size: 16px; }
+    article { font-size: 16px; padding: 10px 20px 30px; }
+    .cta-headline { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <div class="kicker">Personal Safety &amp; Verification</div>
+    <h1>60 Seconds From Now, You Could Know Exactly Who You're Really Dealing With</h1>
+    <p class="subhead">No awkward questions. No waiting weeks. No guessing. Just answers — the moment you need them.</p>
+    <div class="byline">By <strong>Rachel Munson</strong> · Contributor, Everyday Safety Digest · Updated this week</div>
+  </header>
+
+  <article>
+    <p class="drop-cap">There's a specific kind of anxious feeling that happens right before you meet someone new. Maybe it's a date. Maybe it's a "handyman" who found your listing online. Maybe it's someone your teenager has been texting. That flutter of "I hope this is okay" — and the quiet fear that it might not be.</p>
+
+    <p>For most of us, that feeling used to be something we just lived with. We'd Google a name, scroll through a few blurry profile pictures, and hope for the best. And most of the time, nothing bad happened. But "most of the time" isn't good enough when it comes to who you let into your life, your home, or your kid's phone.</p>
+
+    <p>What changed isn't the risk. The risk was always there. What changed is that now, in less time than it takes to order coffee, you can actually find out who someone is — before you find out the hard way.</p>
+
+    <h2 class="section-title">Before: Living On Guesswork</h2>
+
+    <p>Danielle, 34, describes it simply: "I was making decisions about who to trust based on vibes. A nice profile picture. A confident text message. That's it. That was my entire background check system."</p>
+
+    <p>She'd matched with someone on a dating app who seemed perfect — attentive, funny, said all the right things. Something felt slightly off, but she couldn't name it. She Googled his name. Nothing useful came up. She asked a mutual friend, who barely knew him. She almost talked herself out of her own instincts, because what was she supposed to do — accuse a stranger of lying with zero proof?</p>
+
+    <p class="pull-quote">"I didn't want to seem paranoid. I just wanted to know I wasn't walking into something I'd regret."</p>
+
+    <p>That tension — between wanting real answers and not wanting to seem "crazy" for asking — is something almost everyone in this position feels. Free lookup tools gave her outdated addresses and nothing else. A so-called "free" background check site asked for her card, then hid the actual report behind a paywall she didn't trust. She was stuck exactly where she started: unsure, and now also frustrated.</p>
+
+    <h2 class="section-title">The Turning Point</h2>
+
+    <p>It was a friend, not an ad, who told her about a different approach — one that didn't involve courthouse visits, private investigators, or sketchy free sites. Just a name (or a phone number, or an email) entered into a search. That was the entire starting point.</p>
+
+    <p>Danielle was skeptical. She'd been burned by "free report" bait-and-switch sites before. But this was different — instead of teasing a locked report, it actually pulled together public information into something she could read in minutes: records, associated names, social profiles, location history.</p>
+
+    <p>"I ran the search almost as a joke, thinking it wouldn't find anything real," she said. "Then it did. And it wasn't a joke anymore."</p>
+
+    <h2 class="section-title">What This Actually Is</h2>
+
+    <div class="what-is-it">
+      <p>It's not a private investigator. It's not a courthouse trip. It's not a sketchy forum where strangers trade rumors.</p>
+      <p>It's a fast, self-serve way to pull together publicly available information about a person into one readable report — the kind of information that used to take real effort, real money, or real awkward conversations to track down. Typically, a report can include:</p>
+      <ul>
+        <li>Criminal and court record history, where publicly available</li>
+        <li>Known aliases, past addresses, and contact information</li>
+        <li>Linked social media and online profiles</li>
+        <li>Possible marriage, divorce, or other public filings</li>
+        <li>Phone number ownership and carrier details</li>
+      </ul>
+      <p>You type in a name, number, or email. In under a minute, you get a report pulled from public data sources — instead of piecing it together yourself from ten different tabs.</p>
+    </div>
+
+    <h2 class="section-title">After: What Changed</h2>
+
+    <p>Danielle didn't go on that date. The report surfaced information the profile conveniently left out. She calls it "the most useful sixty seconds I've spent on my phone all year."</p>
+
+    <p>But the bigger shift wasn't just that one search — it was what happened after. She stopped feeling powerless in these situations. When her sister mentioned a new roommate, Danielle ran a quick search before move-in day. When a "landlord" on Facebook Marketplace seemed a little too eager for a deposit, she checked him too — and found the listing was a known scam pattern.</p>
+
+    <div class="results-box">
+      <div class="result-item">
+        <div class="checkmark">✓</div>
+        <div class="result-text"><strong>Answers in under a minute</strong> instead of days of guessing or awkward mutual-friend detective work.</div>
+      </div>
+      <div class="result-item">
+        <div class="checkmark">✓</div>
+        <div class="result-text"><strong>Avoided a date with someone</strong> whose public record told a very different story than his profile.</div>
+      </div>
+      <div class="result-item">
+        <div class="checkmark">✓</div>
+        <div class="result-text"><strong>Spotted a rental scam</strong> before sending a deposit to a "landlord" who didn't check out.</div>
+      </div>
+      <div class="result-item">
+        <div class="checkmark">✓</div>
+        <div class="result-text"><strong>Peace of mind with a new roommate</strong> — verified before, not regretted after.</div>
+      </div>
+      <div class="result-item">
+        <div class="checkmark">✓</div>
+        <div class="result-text"><strong>No more guessing games</strong> with unknown callers, texts, or new contacts asking for trust she hadn't earned yet.</div>
+      </div>
+    </div>
+
+    <p>That's the actual benefit here — not snooping, not spying, not drama. Just replacing "I hope this person is who they say they are" with "I know."</p>
+
+    <h2 class="section-title">What Other People Found</h2>
+  </article>
+
+  <div class="testimonials">
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      "I searched a guy I'd been talking to for three weeks. Found out he wasn't just 'between jobs' like he said. Ten minutes of my life saved me months of it."
+      <div class="test-name">— Megan, 31</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      "My daughter had a new online 'friend' she wouldn't stop talking to. I ran a quick check. Turned out to be a completely different person than the profile claimed. I'm so glad I checked."
+      <div class="test-name">— Carl, 47</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      "I actually searched my own name first out of curiosity. Then I searched the contractor I was about to hire. Genuinely can't believe how much came up in that little time."
+      <div class="test-name">— Denise, 44</div>
+    </div>
+  </div>
+
+  <div class="cta-block">
+    <div class="urgency">⚡ Meeting someone new this week? Know before you go.</div>
+    <div class="cta-headline">Get a Full Report in the Next 60 Seconds — Before You Need It, Not After</div>
+    <div class="price-tag">Reports start around $50 — far less than a bad decision costs</div>
+    <a href="#" class="cta-button">RUN MY SEARCH NOW →</a>
+    <div class="sub-cta">Instant results. No awkward conversations required.</div>
+  </div>
+
+  <footer class="disclaimer">
+    This article is for informational purposes and reflects individual, anecdotal experiences; results and available information vary by search and are not guaranteed. This service compiles publicly available records and is not a consumer reporting agency as defined by the Fair Credit Reporting Act (FCRA); reports should not be used for FCRA-regulated purposes such as employment, tenant, or credit screening decisions. Names in testimonials reflect first name and age only to protect privacy. This page may receive compensation for actions taken through links provided.
+  </footer>
+
+</div>
+
+</body>
+</html>
