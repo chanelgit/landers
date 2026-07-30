@@ -1,0 +1,377 @@
+=<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>See What Your Credit Could Look Like in 30 Days</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .container {
+    background: #ffffff;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 480px;
+    padding: 32px 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    width: 100%;
+    height: 10px;
+    background: #e8edf1;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    display: none;
+  }
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+    border-radius: 10px;
+    transition: width 0.4s ease;
+  }
+
+  /* Screens */
+  .screen { display: none; animation: fadeIn 0.4s ease; }
+  .screen.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Start screen */
+  .badge {
+    display: inline-block;
+    background: #dcfce7;
+    color: #15803d;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  h1 {
+    font-size: 26px;
+    color: #0f2027;
+    line-height: 1.3;
+    margin-bottom: 12px;
+  }
+  .subtext {
+    color: #55636b;
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+  .before-after {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: #f4f7f9;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+  .ba-box {
+    text-align: center;
+    flex: 1;
+  }
+  .ba-label {
+    font-size: 11px;
+    color: #8a97a0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .ba-score {
+    font-size: 28px;
+    font-weight: 800;
+  }
+  .ba-score.before { color: #dc2626; }
+  .ba-score.after { color: #16a34a; }
+  .ba-arrow {
+    font-size: 22px;
+    color: #9aa5ac;
+  }
+  .btn-start {
+    display: block;
+    width: 100%;
+    background: linear-gradient(90deg, #16a34a, #22c55e);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(34,197,94,0.35);
+    transition: transform 0.15s ease;
+  }
+  .btn-start:active { transform: scale(0.97); }
+  .microcopy {
+    text-align: center;
+    font-size: 12px;
+    color: #9aa5ac;
+    margin-top: 12px;
+  }
+
+  /* Question screens */
+  .q-headline {
+    font-size: 21px;
+    color: #0f2027;
+    margin-bottom: 20px;
+    line-height: 1.35;
+    font-weight: 700;
+  }
+  .answers {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .answer-btn {
+    width: 100%;
+    text-align: left;
+    background: #f4f7f9;
+    border: 2px solid #eaeff2;
+    border-radius: 14px;
+    padding: 18px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #26333a;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .answer-btn:hover {
+    border-color: #22c55e;
+    background: #f0fdf4;
+  }
+  .answer-btn.selected {
+    border-color: #16a34a;
+    background: #dcfce7;
+  }
+  .emoji {
+    font-size: 20px;
+  }
+
+  /* Loader screen */
+  .loader-wrap {
+    text-align: center;
+    padding: 30px 0;
+  }
+  .spinner {
+    width: 56px;
+    height: 56px;
+    border: 5px solid #e8edf1;
+    border-top: 5px solid #16a34a;
+    border-radius: 50%;
+    margin: 0 auto 24px;
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loader-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: #0f2027;
+    margin-bottom: 8px;
+  }
+  .loader-sub {
+    font-size: 14px;
+    color: #7c8a92;
+    margin-bottom: 20px;
+  }
+  .loader-steps {
+    text-align: left;
+    max-width: 260px;
+    margin: 0 auto;
+    font-size: 13px;
+    color: #55636b;
+  }
+  .loader-steps div {
+    padding: 6px 0;
+    opacity: 0.35;
+  }
+  .loader-steps div.done {
+    opacity: 1;
+    color: #16a34a;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- START SCREEN -->
+  <div class="screen active" id="screen-start">
+    <span class="badge">Free 60-Second Check</span>
+    <h1>See What Your Credit Could Look Like in 30 Days</h1>
+    <p class="subtext">Answer a few quick questions and get a personalized snapshot of how a stronger credit history could change what you qualify for — no hard inquiry, no big deposit.</p>
+
+    <div class="before-after">
+      <div class="ba-box">
+        <div class="ba-label">Today</div>
+        <div class="ba-score before">580</div>
+      </div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-box">
+        <div class="ba-label">Potential</div>
+        <div class="ba-score after">650+</div>
+      </div>
+    </div>
+
+    <button class="btn-start" onclick="startQuiz()">Start My Free Check →</button>
+    <p class="microcopy">No credit card required · Takes under a minute</p>
+  </div>
+
+  <!-- QUESTION 1 -->
+  <div class="screen" id="screen-q1">
+    <div class="q-headline">What are you hoping better credit helps you do?</div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(this,2)"><span class="emoji">🏠</span> Get approved for an apartment</button>
+      <button class="answer-btn" onclick="selectAnswer(this,2)"><span class="emoji">🚗</span> Qualify for a better car loan</button>
+      <button class="answer-btn" onclick="selectAnswer(this,2)"><span class="emoji">💳</span> Get approved for a credit card</button>
+      <button class="answer-btn" onclick="selectAnswer(this,2)"><span class="emoji">📈</span> Just feel more financially secure</button>
+    </div>
+  </div>
+
+  <!-- QUESTION 2 -->
+  <div class="screen" id="screen-q2">
+    <div class="q-headline">How would you describe your credit right now?</div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(this,3)"><span class="emoji">⚠️</span> Below 580, feels stuck</button>
+      <button class="answer-btn" onclick="selectAnswer(this,3)"><span class="emoji">🌱</span> No credit history yet (thin file)</button>
+      <button class="answer-btn" onclick="selectAnswer(this,3)"><span class="emoji">🩹</span> Old collections I haven't dealt with</button>
+      <button class="answer-btn" onclick="selectAnswer(this,3)"><span class="emoji">❓</span> Honestly, I'm afraid to check</button>
+    </div>
+  </div>
+
+  <!-- QUESTION 3 -->
+  <div class="screen" id="screen-q3">
+    <div class="q-headline">Have you tried fixing your credit before?</div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(this,4)"><span class="emoji">💸</span> Paid a credit repair company — no real change</button>
+      <button class="answer-btn" onclick="selectAnswer(this,4)"><span class="emoji">📱</span> Used a free credit app but never took action</button>
+      <button class="answer-btn" onclick="selectAnswer(this,4)"><span class="emoji">🙅</span> Tried disputes myself, got confused</button>
+      <button class="answer-btn" onclick="selectAnswer(this,4)"><span class="emoji">🆕</span> This would be my first real attempt</button>
+    </div>
+  </div>
+
+  <!-- QUESTION 4 -->
+  <div class="screen" id="screen-q4">
+    <div class="q-headline">How soon do you want to see results reported?</div>
+    <div class="answers">
+      <button class="answer-btn" onclick="selectAnswer(this,'loading')"><span class="emoji">⚡</span> As fast as possible</button>
+      <button class="answer-btn" onclick="selectAnswer(this,'loading')"><span class="emoji">📅</span> Within the next 30 days</button>
+      <button class="answer-btn" onclick="selectAnswer(this,'loading')"><span class="emoji">🗓️</span> No rush, just want it moving</button>
+    </div>
+  </div>
+
+  <!-- LOADER SCREEN -->
+  <div class="screen" id="screen-loading">
+    <div class="loader-wrap">
+      <div class="spinner"></div>
+      <div class="loader-title">Finding your results...</div>
+      <div class="loader-sub">Matching your answers to your credit-building plan</div>
+      <div class="loader-steps" id="loaderSteps">
+        <div id="step1">✓ Analyzing your goals</div>
+        <div id="step2">✓ Checking credit profile type</div>
+        <div id="step3">✓ Matching best-fit builder plan</div>
+        <div id="step4">✓ Preparing your snapshot</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const totalQuestions = 4;
+  const screens = {
+    start: document.getElementById('screen-start'),
+    q1: document.getElementById('screen-q1'),
+    q2: document.getElementById('screen-q2'),
+    q3: document.getElementById('screen-q3'),
+    q4: document.getElementById('screen-q4'),
+    loading: document.getElementById('screen-loading')
+  };
+  const progressWrap = document.getElementById('progressWrap');
+  const progressBar = document.getElementById('progressBar');
+
+  // === REDIRECT PLACEHOLDER ===
+  const OFFER_URL = "https://your-offer-or-tracking-link.com/credit-builder";
+
+  function showScreen(name) {
+    Object.values(screens).forEach(s => s.classList.remove('active'));
+    screens[name].classList.add('active');
+  }
+
+  function updateProgress(step) {
+    const pct = (step / totalQuestions) * 100;
+    progressBar.style.width = pct + '%';
+  }
+
+  function startQuiz() {
+    progressWrap.style.display = 'block';
+    updateProgress(0);
+    showScreen('q1');
+  }
+
+  function selectAnswer(btn, next) {
+    const group = btn.parentElement.querySelectorAll('.answer-btn');
+    group.forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+
+    setTimeout(() => {
+      if (next === 'loading') {
+        updateProgress(totalQuestions);
+        showScreen('loading');
+        runLoader();
+      } else {
+        updateProgress(next - 1);
+        showScreen('q' + next);
+      }
+    }, 350);
+  }
+
+  function runLoader() {
+    const steps = ['step1', 'step2', 'step3', 'step4'];
+    steps.forEach(id => document.getElementById(id).classList.remove('done'));
+
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < steps.length) {
+        document.getElementById(steps[i]).classList.add('done');
+        i++;
+      } else {
+        clearInterval(interval);
+        setTimeout(() => {
+          window.location.href = OFFER_URL;
+        }, 500);
+      }
+    }, 550);
+  }
+</script>
+
+</body>
+</html>
