@@ -1,0 +1,433 @@
+=<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I Searched My Own Name and Couldn't Believe What Came Up</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #f7f5f1;
+    color: #222;
+    line-height: 1.7;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 0 30px rgba(0,0,0,0.06);
+  }
+
+  .top-bar {
+    background: #1a1a2e;
+    color: #ccc;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    text-align: center;
+    padding: 6px 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .header-content {
+    padding: 40px 30px 20px;
+  }
+
+  .category-tag {
+    display: inline-block;
+    background: #ecebe5;
+    color: #555;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 3px;
+    margin-bottom: 18px;
+  }
+
+  h1 {
+    font-size: 32px;
+    line-height: 1.3;
+    color: #111;
+    margin-bottom: 14px;
+    font-weight: 700;
+  }
+
+  .subheadline {
+    font-size: 19px;
+    color: #555;
+    font-style: italic;
+    margin-bottom: 22px;
+    font-weight: normal;
+  }
+
+  .byline {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #888;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    padding: 12px 0;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .byline strong { color: #444; }
+
+  .article-body {
+    padding: 10px 30px 40px;
+  }
+
+  .article-body p {
+    font-size: 18px;
+    color: #2a2a2a;
+    margin-bottom: 20px;
+  }
+
+  .drop-cap::first-letter {
+    font-size: 52px;
+    font-weight: bold;
+    float: left;
+    line-height: 0.85;
+    margin-right: 10px;
+    margin-top: 6px;
+    color: #1a1a2e;
+  }
+
+  .highlight-box {
+    background: #fff8e6;
+    border-left: 4px solid #e0b04d;
+    padding: 18px 22px;
+    margin: 26px 0;
+    font-style: italic;
+    font-size: 17px;
+    color: #4a3f28;
+  }
+
+  h2.section-title {
+    font-size: 24px;
+    color: #111;
+    margin: 40px 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #1a1a2e;
+  }
+
+  .story-block {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    padding: 22px;
+    margin: 20px 0;
+  }
+
+  .story-block p:last-child { margin-bottom: 0; }
+
+  .what-is-it {
+    background: #eef2f5;
+    border-radius: 8px;
+    padding: 28px 26px;
+    margin: 30px 0;
+  }
+
+  .what-is-it ul {
+    margin: 16px 0 6px 20px;
+  }
+
+  .what-is-it li {
+    font-size: 17px;
+    margin-bottom: 10px;
+    color: #2a2a2a;
+  }
+
+  .results-section {
+    margin: 30px 0;
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+
+  .result-card {
+    background: #fff;
+    border: 1px solid #e2e2e2;
+    border-left: 4px solid #2e7d5b;
+    border-radius: 5px;
+    padding: 16px 18px;
+  }
+
+  .result-card .num {
+    font-size: 22px;
+    font-weight: bold;
+    color: #2e7d5b;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .result-card .label {
+    font-size: 14px;
+    color: #555;
+    font-family: Arial, sans-serif;
+  }
+
+  .testimonials {
+    margin: 30px 0;
+  }
+
+  .testimonial {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .testimonial .stars {
+    color: #e0b04d;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .testimonial p.quote {
+    font-size: 16px;
+    font-style: italic;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .testimonial .name {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #888;
+    font-weight: bold;
+  }
+
+  .cta-section {
+    text-align: center;
+    background: #1a1a2e;
+    color: #fff;
+    padding: 36px 26px;
+    margin: 36px 0 20px;
+    border-radius: 8px;
+  }
+
+  .cta-section h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    font-family: Arial, sans-serif;
+  }
+
+  .cta-section p {
+    font-size: 15px;
+    color: #cfcfda;
+    margin-bottom: 22px;
+    font-family: Arial, sans-serif;
+  }
+
+  .urgency-tag {
+    display: inline-block;
+    background: #c0392b;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+    animation: pulse 1.8s infinite;
+  }
+
+  @keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+  }
+
+  .cta-button {
+    display: inline-block;
+    background: linear-gradient(90deg, #e0b04d, #d69a2d);
+    color: #1a1a2e;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 19px;
+    padding: 18px 42px;
+    border-radius: 6px;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(224,176,77,0.4);
+    transition: transform 0.15s ease;
+  }
+
+  .cta-button:hover {
+    transform: translateY(-2px);
+  }
+
+  .cta-sub {
+    margin-top: 14px;
+    font-size: 12px;
+    color: #9a9aab;
+    font-family: Arial, sans-serif;
+  }
+
+  .disclaimer {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #999;
+    padding: 20px 30px 40px;
+    line-height: 1.6;
+    border-top: 1px solid #eee;
+  }
+
+  @media (max-width: 480px) {
+    h1 { font-size: 25px; }
+    .subheadline { font-size: 16px; }
+    .article-body p { font-size: 16.5px; }
+    .results-grid { grid-template-columns: 1fr; }
+    .header-content, .article-body { padding-left: 20px; padding-right: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">PERSONAL ESSAY &nbsp;•&nbsp; RELATIONSHIPS &amp; SAFETY</div>
+
+<div class="container">
+
+  <div class="header-content">
+    <span class="category-tag">Reader Discovery</span>
+    <h1>I Typed My Own Name Into a Search Bar on a Whim. I Wasn't Ready for What Came Back.</h1>
+    <p class="subheadline">It started as a joke with my sister. It ended with me looking at my life — and everyone in it — completely differently.</p>
+    <div class="byline">
+      <span><strong>By Danielle Ruiz</strong> — Contributing Writer</span>
+      <span>Updated: This Week</span>
+    </div>
+  </div>
+
+  <div class="article-body">
+
+    <p class="drop-cap">It was supposed to be a five-minute distraction. My sister sent me a link with the message "try this, it's wild," and I almost didn't click it. I'm glad I did — because what I found out that night is the reason I'm writing this at all.</p>
+
+    <p>If you've ever met someone new — a match, a neighbor, a "friend of a friend" — and had that quiet, nagging feeling of <em>I don't actually know this person</em>, you already understand the itch I'm talking about. Most of us just live with it. We tell ourselves we're overthinking. We ignore the feeling and hope for the best.</p>
+
+    <p>I used to be one of those people. Not anymore.</p>
+
+    <h2 class="section-title">The Text That Started It</h2>
+
+    <div class="story-block">
+      <p>Six weeks ago, my sister had been talking to a guy for almost a month. Sweet, funny, said all the right things. But something felt off — he was cagey about basic details. Where he actually lived. What happened with his "ex." Why he'd deleted his old social media.</p>
+      <p>She laughed it off at dinner. "I'm probably being paranoid," she said. But I could tell it was eating at her. She'd Googled him three separate times and found nothing but a LinkedIn from 2019.</p>
+      <p>That's when she mentioned this thing she'd stumbled across online — not an app, not a "detective," just a search. You type in a name. It looks through public records that already exist but that nobody ever bothers — or knows how — to actually pull together.</p>
+    </div>
+
+    <p>I was skeptical. I'd tried the free "background check" sites before — the ones that ask for your name, promise a report, and then hit you with a paywall for information that turns out to be a dead end anyway. I assumed this was more of the same.</p>
+
+    <p>Out of curiosity — mostly to prove my sister wrong — I decided to try it on myself first.</p>
+
+    <div class="highlight-box">
+      "I wasn't looking for anything. I just wanted to see what a stranger could find about ME in sixty seconds. What came back made my stomach drop a little."
+    </div>
+
+    <h2 class="section-title">The Turning Point</h2>
+
+    <p>The report that came back had my old address from four years ago. A phone number I'd forgotten I ever had. A social media account I made in college and completely abandoned. Public records I didn't even know existed. All of it, organized, in one place, in less time than it takes to order coffee.</p>
+
+    <p>And then it hit me — if a search bar could find <em>all of that</em> about me, a totally average person who's never done anything remotely newsworthy, what would it find about someone actively hiding something?</p>
+
+    <p>So I ran it on my sister's guy. Quietly. Just to see.</p>
+
+    <p>What came back wasn't dramatic — no scandal, no crime. But it was enough. A marriage record from three years ago that had never come up in conversation. An address in a completely different state than the one he claimed. Small things. The kind of things that don't matter... until they do.</p>
+
+    <p>She wasn't paranoid. She was right.</p>
+
+    <h2 class="section-title">So What Actually Is This?</h2>
+
+    <div class="what-is-it">
+      <p>Here's the part that surprised me most: this isn't some shady hacker tool or "spy app." It's not illegal, and it's not complicated. It's simply a way of pulling together information that is already public — the kind of records that exist scattered across courthouses, old databases, and social platforms, except most people have no idea how to actually access them, or don't have hours to spend trying.</p>
+      <p>In under two minutes, a single search can surface things like:</p>
+      <ul>
+        <li>Criminal and court records tied to a name</li>
+        <li>Current and past addresses</li>
+        <li>Phone numbers and known aliases</li>
+        <li>Social media profiles — including ones people think are hidden</li>
+        <li>Marriage, divorce, and public filing history</li>
+      </ul>
+      <p>No awkward conversation. No confrontation. No "why are you asking me that." Just answers — quietly, in private, on your own time.</p>
+    </div>
+
+    <h2 class="section-title">What Changed After I Started Using It</h2>
+
+    <div class="results-section">
+      <p>Once I saw what it could do, I stopped treating it like a one-time novelty. I started using it any time that "something feels off" itch showed up — new matches, an unknown number that kept calling, even the guy my roommate hired off a marketplace app to fix her car.</p>
+
+      <div class="results-grid">
+        <div class="result-card">
+          <span class="num">60 sec</span>
+          <span class="label">Average time to get a full report</span>
+        </div>
+        <div class="result-card">
+          <span class="num">3</span>
+          <span class="label">Unknown numbers identified before I answered</span>
+        </div>
+        <div class="result-card">
+          <span class="num">1</span>
+          <span class="label">Sister spared a bad relationship</span>
+        </div>
+        <div class="result-card">
+          <span class="num">0</span>
+          <span class="label">Awkward conversations needed</span>
+        </div>
+      </div>
+
+      <p>The strangest part wasn't even what I found about other people. It was the peace of mind. That itch — the one I used to just ignore — finally has somewhere to go.</p>
+    </div>
+
+    <h2 class="section-title">I'm Not the Only One</h2>
+
+    <div class="testimonials">
+
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"I searched my own name first because my coworker said I 'wouldn't believe' what came up. She was right. Then I searched the guy I'd been talking to for a month. Glad I did before agreeing to meet him."</p>
+        <div class="name">— Megan, 31</div>
+      </div>
+
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"Honestly did it as a joke at first. Ended up finding an old address and a name change I had no idea about for someone I'd known for YEARS. Wild what's just sitting out there already."</p>
+        <div class="name">— Robert, 47</div>
+      </div>
+
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"My teenager's been talking to someone online for weeks. I didn't want to snoop through her phone, so I tried this instead. Took less time than making dinner. Answers I didn't have to ask for."</p>
+        <div class="name">— Carol, 44</div>
+      </div>
+
+    </div>
+
+    <div class="cta-section">
+      <span class="urgency-tag">SEARCHES SPIKE ON WEEKENDS — CHECK BEFORE YOU MEET</span>
+      <h3>See What Comes Up When You Search a Name</h3>
+      <p>It takes about a minute. Whatever you find — or don't — is for your eyes only.</p>
+      <a href="#" class="cta-button">RUN A FREE SEARCH NOW →</a>
+      <div class="cta-sub">No awkward questions. No confrontation. Just answers.</div>
+    </div>
+
+    <p style="font-size:15px; color:#777; text-align:center; margin-top:-10px;">Curious what your own name pulls up? Most people who try it say the same thing: "I wasn't expecting that."</p>
+
+  </div>
+
+  <div class="disclaimer">
+    <p><strong>Disclaimer:</strong> This page is a personal essay and reflects one individual's experience and opinions; results and experiences will vary from person to person. This is an advertisement / advertorial and may be a paid partnership. Any search tool referenced aggregates publicly available information and does not guarantee the accuracy, completeness, or timeliness of any information returned. Reports should not be used to make decisions regarding employment, housing, credit, insurance, or any purpose covered under the Fair Credit Reporting Act (FCRA); this service is not a consumer reporting agency as defined by the FCRA. Names in testimonials have been used with permission; images and identifying details may be representative and not of actual customers. Always use publicly available information responsibly and in accordance with applicable law.</p>
+  </div>
+
+</div>
+
+</body>
+</html>
